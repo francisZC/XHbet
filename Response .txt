@@ -1,0 +1,49 @@
+Response {
+  size: 0,
+  timeout: 0,
+  [Symbol(Body internals)]:
+   { body:
+      PassThrough {
+        _readableState: [ReadableState],
+        readable: true,
+        _events: [Object],
+        _eventsCount: 6,
+        _maxListeners: undefined,
+        _writableState: [WritableState],
+        writable: true,
+        allowHalfOpen: true,
+        _transformState: [Object] },
+     disturbed: false,
+     error: null },
+  [Symbol(Response internals)]:
+   { url: 'http://192.168.1.141:7999/post',
+     status: 200,
+     statusText: 'OK',
+     headers: Headers { [Symbol(map)]: [Object] },
+     counter: 0 } }
+{ status: -1, result: 'not found command', hex: '' }
+8 'times'
+Response {
+  size: 0,
+  timeout: 0,
+  [Symbol(Body internals)]:
+   { body:
+      PassThrough {
+        _readableState: [ReadableState],
+        readable: true,
+        _events: [Object],
+        _eventsCount: 6,
+        _maxListeners: undefined,
+        _writableState: [WritableState],
+        writable: true,
+        allowHalfOpen: true,
+        _transformState: [Object] },
+     disturbed: false,
+     error: null },
+  [Symbol(Response internals)]:
+   { url: 'http://192.168.1.141:7999/post',
+     status: 200,
+     statusText: 'OK',
+     headers: Headers { [Symbol(map)]: [Object] },
+     counter: 0 } }
+{ status: 0, result: 0, hex: '1f' }

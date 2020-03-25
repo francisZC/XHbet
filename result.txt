@@ -1,0 +1,5 @@
+  jsonResult:
+   { restTag: 'suua',
+     actionId: 30001,
+     parFlag: 1,
+     parContent: { status: 1, result: 1, hex: '7931000079' } } }

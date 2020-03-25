@@ -1,0 +1,581 @@
+
+    var fs = require('fs');
+    const mqttlib = require('./mqtt.js');
+    var msg;
+    var baseconf;
+    var sysconf;
+    var languagelist;
+    var language;
+    var systeminfo;
+    var identifyparameter;
+    var mqttconfig;
+    var calibration;
+    var history;
+    var debug;
+    var booting=false;
+    var if_cali = "false";
+    var if_run = "false";
+    var run_panel = {};
+
+    function bootreset(bool){
+        booting = bool;
+        if_cali = "false";
+        if_run = "false";
+        run_panel = {};
+    }
+    function if_boot(){
+        return booting;
+    }
+
+
+    async function database(data){
+    var key = data.action;
+    switch(key){
+        case "ZH_Medicine_Login":
+            var usr = data.body.username;
+            var ret = msg.ZH_Medicine_Login;
+            ret.status="true";
+            ret.ret.username= usr;
+            ret.ret.userid= "123123123";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_Panel_info":
+
+            var ret = msg.ZH_Medicine_Panel_info;
+            var filename = ["2x3","3x4","4x6","6x8","8x12","16x24"];
+            var temp = GetRandomNum(0,5);
+            var body = data.body;
+            if(body!=""){
+                if(-1 !== filename.indexOf(body)) temp = filename.indexOf(body);
+            }
+            ret.ret=baseconf[filename[temp]];
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_system_info":
+            var ret = msg.ZH_Medicine_system_info;
+            ret.ret=systeminfo;
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_task_info":
+            var ret = msg.ZH_Medicine_task_info;
+            if(if_run == "true"){
+                ret.ret.parameter=systeminfo;
+                ret.ret.configure=run_panel;
+                ret.ret.running="true";
+                ret.status="true";
+            }else{
+                var panel = buildrandomemptyresult();
+                ret.ret.parameter=systeminfo;
+                ret.ret.configure=panel;
+                ret.ret.running="false";
+                ret.status="true";
+            }
+
+            return JSON.stringify(ret);
+        case "ZH_Medicine_last_history":
+            var ret = msg.ZH_Medicine_task_info;
+            var panel = buildrandomresult();
+            ret.ret.parameter=systeminfo;
+            ret.ret.configure=panel;
+            ret.ret.running="false";
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_task_run":
+            var ret = msg.ZH_Medicine_task_run;
+            var body = data.body;
+            var status = body.status;
+            var panel = body.configure;
+            panel.basic.batch = "test"+GetRandomNum(0,999);
+            var retstatus="false";
+            if(status == "true") retstatus = "true";
+            ret.ret.parameter=systeminfo;
+            ret.ret.configure=panel;
+            ret.ret.running=retstatus;
+            ret.status="true";
+            if_run = retstatus;
+            run_panel = panel;
+            return JSON.stringify(ret);
+        case "ZH_Medicine_task_running":
+            var ret = msg.ZH_Medicine_task_running;
+
+            var retstatus="true";
+            var body = data.body;
+            var panel = body.configure;
+            var arrlength = panel.picture.length;
+
+            for(var i=0;i<arrlength;i++){
+                if(panel.picture[i].shooting === "false"){
+                    panel.picture[i].shooting = "true";
+                    if((i-1)>=0){
+                        panel.picture[i-1].videoing = "true";
+                        panel.picture[i-1].shooting = "done";
+                        var shootnumber = GetRandomNum(1,4);
+                        var shootarray = [];
+                        for(var j=0;j<shootnumber;j++){
+                            shootarray.push("./demo/pic/shoot"
+                            +(j+1)+".png");
+                        }
+                        panel.picture[i-1].shoot = shootarray;
+                    }
+                    if((i-2)>=0){
+                        panel.picture[i-2].videoing = "done";
+                        panel.picture[i-2].video = "./demo/video/test1.mp4";
+                        panel.picture[i-2].videolength = "60";
+                        panel.picture[i-2].shooting = "done";
+                        panel.picture[i-2].analysising = "true";
+                    }
+                    if((i-3)>=0){
+                        panel.picture[i-3].videoing = "done";
+                        panel.picture[i-3].shooting = "done";
+                        panel.picture[i-3].analysising = "done";
+                        panel.picture[i-3].analysis.resultPic=[];
+                        for(var j=0;j<panel.picture[i-3].shoot.length;j++){
+                            panel.picture[i-3].analysis.resultPic.push(
+                                "./demo/pic/result.png"
+                            );
+                        }
+
+                        panel.picture[i-3].analysis.resultVideo="./demo/video/test2.mp4";
+                        panel.picture[i-3].analysis.result=[];
+                        for(var j=0;j<5;j++){
+                            panel.picture[i-3].analysis.result.push(
+                                {
+                                    "title":"result"+j,
+                                    "value": ""+GetRandomNum(1,40000)
+                                }
+                            );
+                        }
+                    }
+                    break;
+                }
+                if(i === (arrlength-1)){
+                    if(panel.picture[i].shooting !== "done"){
+                        panel.picture[i].shooting = "done";
+                        panel.picture[i].videoing = "true";
+                        var shootnumber = GetRandomNum(1,4);
+                        var shootarray = [];
+                        for(var j=0;j<shootnumber;j++){
+                            shootarray.push("./demo/pic/shoot"
+                                +(j+1)+".png");
+                        }
+                        panel.picture[i].shoot = shootarray;
+                        if((i-1)>=0){
+                            panel.picture[i-1].videoing = "done";
+                            panel.picture[i-1].video = "./demo/video/test1.mp4";
+                            panel.picture[i-1].videolength = "60";
+                            panel.picture[i-1].analysising = "true";
+                        }
+                        if((i-2)>=0){
+                            panel.picture[i-2].analysising = "done";
+                            panel.picture[i-2].analysis.resultPic=[];
+                            for(var j=0;j<panel.picture[i-2].shoot.length;j++){
+                                panel.picture[i-2].analysis.resultPic.push(
+                                    "./demo/pic/result.png"
+                                );
+                            }
+
+                            panel.picture[i-2].analysis.resultVideo="./demo/video/test2.mp4";
+                            panel.picture[i-2].analysis.result=[];
+                            for(var j=0;j<5;j++){
+                                panel.picture[i-2].analysis.result.push(
+                                    {
+                                        "title":"result"+j,
+                                        "value": ""+GetRandomNum(1,40000)
+                                    }
+                                );
+                            }
+                        }
+                    }else if(panel.picture[i].videoing !== "done"){
+                        panel.picture[i].videoing = "done";
+                        panel.picture[i].video = "./demo/video/test1.mp4";
+                        panel.picture[i].videolength = "60";
+                        panel.picture[i].analysising = "true";
+                        if((i-1)>=0){
+                            panel.picture[i-1].analysising = "done";
+                            panel.picture[i-1].analysis.resultPic=[];
+                            for(var j=0;j<panel.picture[i-1].shoot.length;j++){
+                                panel.picture[i-1].analysis.resultPic.push(
+                                    "./demo/pic/result.png"
+                                );
+                            }
+
+                            panel.picture[i-1].analysis.resultVideo="./demo/video/test2.mp4";
+                            panel.picture[i-1].analysis.result=[];
+                            for(var j=0;j<5;j++){
+                                panel.picture[i-1].analysis.result.push(
+                                    {
+                                        "title":"result"+j,
+                                        "value": ""+GetRandomNum(1,40000)
+                                    }
+                                );
+                            }
+                        }
+                    }else{
+                        panel.picture[i].analysising = "done";
+                        panel.picture[i].analysis.resultPic=[];
+                        for(var j=0;j<panel.picture[i].shoot.length;j++){
+                            panel.picture[i].analysis.resultPic.push(
+                                "./demo/pic/result.png"
+                            );
+                        }
+
+                        panel.picture[i].analysis.resultVideo="./demo/video/test2.mp4";
+                        panel.picture[i].analysis.result=[];
+                        for(var j=0;j<5;j++){
+                            panel.picture[i].analysis.result.push(
+                                {
+                                    "title":"result"+j,
+                                    "value": ""+GetRandomNum(1,40000)
+                                }
+                            );
+                        }
+                        retstatus = "false"
+                    }
+                }
+            }
+            ret.ret.parameter=systeminfo;
+            ret.ret.configure=panel;
+            ret.ret.running=retstatus;
+            ret.status="true";
+            if_run = retstatus;
+            if(retstatus == "true"){
+                run_panel = panel;
+            }else{
+                run_panel = {};
+            }
+            return JSON.stringify(ret);
+        case "ZH_Medicine_set_temp_conf":
+            var ret = msg.ZH_Medicine_set_temp_conf;
+            identifyparameter=jsondeepcopy(data.body.configure);
+            ret.ret=identifyparameter;
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_get_temp_conf":
+            var ret = msg.ZH_Medicine_get_temp_conf;
+            ret.ret=identifyparameter;
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_get_identify_conf":
+            var ret = msg.ZH_Medicine_get_temp_conf;
+            ret.ret=identifyparameter;
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_run_temp_analysis":
+            var ret = msg.ZH_Medicine_set_temp_conf;
+            identifyparameter=jsondeepcopy(data.body.configure);
+            ret.ret=identifyparameter;
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_get_temp_task_status":
+            var body = jsondeepcopy(data.body);
+            body.analysis.result = [];
+            body.analysis.result.push(
+                {
+                    "title":"temptrain",
+                    "value":"true"
+                }
+            );
+            var tempret;
+            if(15>= GetRandomNum(1,20)){
+                tempret = {
+                    "status":"false"
+                }
+            }else{
+                tempret = {
+                    "status":"true",
+                    "result": body
+                }
+            }
+            var ret = msg.ZH_Medicine_set_temp_conf;
+            ret.ret=tempret;
+            ret.status="true";
+            ret.msg="process"+GetRandomNum(0,100)+"%";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_save_temp_conf":
+            var ret = msg.ZH_Medicine_save_temp_conf;
+            identifyparameter=jsondeepcopy(data.body);
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_sys_config":
+            var ret = msg.ZH_Medicine_sys_config;
+            ret.ret=sysconf;
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_sys_config_save":
+            var ret = msg.ZH_Medicine_sys_config_save;
+            sysconf=jsondeepcopy(data.body);
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_sys_language":
+            var ret = msg.ZH_Medicine_sys_language;
+            var defaultlanguage = data.body.default;
+            if(languagelist.default !== defaultlanguage){
+                reloadlanguage(defaultlanguage);
+            }
+            ret.ret=language;
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_sys_language_list":
+            var ret = msg.ZH_Medicine_sys_language_list;
+            ret.ret=languagelist;
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_mqtt_conf":
+            var ret = msg.ZH_Medicine_mqtt_conf;
+            ret.ret=mqttconfig;
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_cali_config":
+            var ret = msg.ZH_Medicine_cali_config;
+            ret.ret=calibration;
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_cali_command":
+            var ret = msg.ZH_Medicine_cali_command;
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_cali_mode":
+            var ret = msg.ZH_Medicine_cali_mode;
+            if(data.body.triger == "true" || data.body.triger == "false" ){
+                if_cali = data.body.triger;
+            }
+            ret.ret=if_cali;
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_history_list":
+            var ret = msg.ZH_Medicine_history_list;
+            ret.ret=build_random_history();
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_history_task_info":
+            var ret = msg.ZH_Medicine_history_task_info;
+            var panel = buildrandomresult();
+            panel.basic.batch = data.body.batch;
+            ret.ret.parameter=systeminfo;
+            ret.ret.configure=panel;
+            ret.ret.running="false";
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_debug_config":
+            var ret = msg.ZH_Medicine_debug_config;
+            ret.ret=debug;
+            ret.status="true";
+            return JSON.stringify(ret);
+        case "ZH_Medicine_debug_command":
+            var ret = msg.ZH_Medicine_cali_command;
+            ret.status="true";
+            mqttlib.publicdebug("mqtt_debug_start");
+            var pending_send =  function(){
+                return new Promise((resolve,reject)=>{
+                   var Interval = setInterval(()=>{
+                       //console.log("in cycle1");
+                       if(mqttlib.getdebuginfo().start){
+                           resolve(1);
+                           clearInterval(Interval);
+                       }
+                   },300);
+                });
+            };
+            var res1 = await pending_send();
+
+            mqttlib.publicdebug("mqtt_debug_done");
+            var pending_done =  function(){
+                return new Promise((resolve,reject)=>{
+                    var Interval = setInterval(()=>{
+
+                        //console.log("in cycle2");
+                        if(mqttlib.getdebuginfo().done){
+                            resolve(1);
+                            clearInterval(Interval);
+                        }
+                    },300);
+                });
+            };
+            res1 = await pending_done();
+
+            mqttlib.publicdebug("mqtt_debug_end");
+            var pending_end =  function(){
+                return new Promise((resolve,reject)=>{
+                    var Interval = setInterval(()=>{
+                        //console.log("in cycle3");
+                        if(mqttlib.getdebuginfo().end){
+                            mqttlib.resetdebuginfo();
+                            resolve(1);
+                            clearInterval(Interval);
+                        }
+                    },300);
+                });
+            };
+            res1 = await pending_end();
+            return JSON.stringify(ret);
+        default:
+            console.log("Don't understand query key:"+key);
+            return JSON.stringify(msg.ZH_Medicine_default);
+    }
+}
+
+    function check_usr(data){
+    }
+    function req_test(){
+    }
+    function GetRandomNum(Min,Max)
+    {
+        let Range = Max - Min;
+        let Rand = Math.random();
+        return(Min + Math.round(Rand * Range));
+    }
+
+    function prepareconf(){
+        console.log("Start to prepare the configuration structure.");
+
+        msg = JSON.parse(jsReadFiles("./msg/message.json"));
+        baseconf={};
+        let templist = getfilelist("./baseconf/plateconf/");
+        for(let i=0;i<templist.length;i++){
+            baseconf[templist[i].split(".")[0]]=JSON.parse(jsReadFiles("./baseconf/plateconf/"+templist[i]));
+        }
+        sysconf = JSON.parse(jsReadFiles("./sysconf/configure.json"));
+        languagelist = JSON.parse(jsReadFiles("./sysconf/supportlanguage.json"));
+
+        language=JSON.parse(jsReadFiles("./language/language_"+languagelist.default+".json"));
+        systeminfo= JSON.parse(jsReadFiles("./sysconf/systeminfo.json"));
+        identifyparameter= JSON.parse(jsReadFiles("./sysconf/IdentifyParameter.json"));
+        mqttconfig = JSON.parse(jsReadFiles("./sysconf/mqtt.json"));
+        calibration = JSON.parse(jsReadFiles("./sysconf/calibration.json"));
+        history = JSON.parse(jsReadFiles("./sysconf/history.json"));
+        debug = JSON.parse(jsReadFiles("./sysconf/debug.json"));
+        console.log("config load finish");
+        //console.log("baseconf:");
+        //console.log(JSON.stringify(baseconf));
+    }
+
+
+    function getfilelist(filePath){
+        let list = fs.readdirSync(filePath);
+        return list;
+    }
+
+    function jsReadFiles(files) {
+        let output = fs.readFileSync(files, 'utf8');
+        return output;
+    }
+    function jsWriteFiles(files,data) {
+        fs.writeFileSync(files, data);
+    }
+    function jsondeepcopy(data){
+        return JSON.parse(JSON.stringify(data));
+    }
+    function buildoneresult(series){
+        let subpic={
+            "series":series,
+            "shoot":[],
+            "video":"./demo/video/test1.mp4",
+            "videolength":60,
+            "shooting":"done",
+            "videoing":"done",
+            "analysising":"done",
+            "analysis":{}
+        }
+        let shootnumber= GetRandomNum(1,4);
+        let resultpic=[]
+        for(let i=0;i<shootnumber;i++){
+            subpic.shoot.push("./demo/pic/shoot"+(i+1)+".png");
+            resultpic.push("./demo/pic/result.png");
+        }
+        let resultAna = [];
+        for(let i=0;i<5;i++){
+            resultAna.push({
+                "title":"result"+i,
+                "value":""+GetRandomNum(1,1000000)
+            });
+        }
+        subpic.analysis={
+            'resultPic':resultpic,
+            'resultVideo':"./demo/video/test2.mp4",
+            'result':resultAna
+        };
+        return subpic;
+    }
+    function buildrandomemptyresult(){
+        let filename = ["2x3","3x4","4x6","6x8","8x12","16x24"];
+        let temp = GetRandomNum(0,5);
+        let retarray=jsondeepcopy(baseconf[filename[temp]]);
+        retarray.basic.parameter={};
+        return retarray;
+    }
+    function buildrandomresult(){
+        let filename = ["2x3","3x4","4x6","6x8","8x12","16x24"];
+        let temp = GetRandomNum(0,5);
+        let retarray=jsondeepcopy(baseconf[filename[temp]]);
+        retarray.basic.batch="12312312312";
+        retarray.basic.parameter.smallsize = GetRandomNum(180,220);
+        retarray.basic.parameter.smallmiddle = GetRandomNum(450,550);
+        retarray.basic.parameter.middlelarge = GetRandomNum(1800,2200);
+        retarray.basic.parameter.largesize = GetRandomNum(4800,5200);
+
+        if(temp === 0 ){
+            for(let i=0;i<retarray.basic.longitude.length;i++){
+                if(10>GetRandomNum(0,100)){
+                    continue;
+                }else{
+                    retarray.picture.push(buildoneresult(retarray.basic.longitude[i]));
+                }
+
+            }
+        }else{
+            for(let i=0;i<retarray.basic.latitude.length;i++){
+                for(let j=0;j<retarray.basic.longitude.length;j++){
+                    if(30>GetRandomNum(0,100)){
+                        continue;
+                    }else{
+                        retarray.picture.push(buildoneresult(
+                            retarray.basic.latitude[i]+
+                            retarray.basic.longitude[j]));
+                    }
+                }
+            }
+        }
+
+        return retarray;
+
+
+    }
+    function reloadlanguage(defaultlang){
+        language=JSON.parse(jsReadFiles("./language/language_"+defaultlang+".json"));
+        languagelist.default = defaultlang;
+        jsWriteFiles("./sysconf/supportlanguage.json",JSON.stringify(languagelist));
+
+    }
+    function is_calibration(){
+        if(if_cali==="false") return false;
+        return true;
+    }
+    function build_random_history(){
+        let historylist = [];
+
+        let filename = ["2x3","3x4","4x6","6x8","8x12","16x24"];
+        let historylength = GetRandomNum(10,100);
+        for(let i=0;i<historylength;i++){
+            let item={};
+            for(let x in history.historyclass){
+                if(x==="batch"){
+                    item[x] = "xiaoma"+ GetRandomNum(100000,999999);
+                }else if(x === "date"){
+                    item[x] = ""+GetRandomNum(100000,999999);
+                }else if(x === "panel"){
+                    item[x] = ""+filename[GetRandomNum(0,5)];
+                }else{
+                    item[x]=""+GetRandomNum(0,123456);
+                }
+            }
+            historylist.push(item);
+        }
+        return historylist;
+    }
+    exports.req_test=req_test;
+    exports.database=database;
+    exports.check_usr=check_usr;
+    exports.prepareconf=prepareconf;
+    exports.GetRandomNum=GetRandomNum;
+    exports.is_calibration=is_calibration;
+    exports.bootreset=bootreset;
+    exports.if_boot=if_boot;

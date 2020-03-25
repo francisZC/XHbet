@@ -1,0 +1,31 @@
+{
+  size: 0,
+  timeout: 0,
+  [Symbol(Body internals)]:
+   { body:
+      PassThrough {
+        _readableState: [ReadableState],
+        readable: true,
+        _events: [Object],
+        _eventsCount: 6,
+        _maxListeners: undefined,
+        _writableState: [WritableState],
+        writable: true,
+        allowHalfOpen: true,
+        _transformState: [Object] },
+     disturbed: false,
+     error: null },
+  [Symbol(Response internals)]:
+   { url: 'http://192.168.1.141:7999/post',
+     status: 200,
+     statusText: 'OK',
+     headers: Headers { [Symbol(map)]: [Object] },
+     counter: 0 } }
+{ restTag: 'suua',
+  actionId: 30001,
+  parFlag: 1,
+  parContent:
+   { status: -1,
+     result: -1,
+     hex:
+      '2e89e5725c2a8d4c9573c5c966aeb565c5c968adbd64592c69815b2ab96527ba35a605da11425405024daa14250d3a425549150522312053aa14aa393dc2e1380912d5664f2b8a3513aa345332d135a69a31269a3053d538d3aa334d549a349a30269a314da2384dd1454dd4aa44149a36ba3553ba3413aa4653dd3393d9458230aa45a6823082308a3293c932d3b23613d53953ba3393dd' } }

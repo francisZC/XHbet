@@ -1,0 +1,70 @@
+﻿20190202:
+Panel status: Running/Choice/View
+Need be controled in united level, this will be a critical issue in future.(done)
+20190511:
+xhgird:
+如果view尺寸发生变化，会造成显示不出来(done)
+20190511:
+foot:
+是否要锁定当前页面的button？否则即使在当前页面，按按钮还是会跳。目前在basic的层面做了一个状态，判断如果是一样的状态就不做操作。done
+button:
+button的disable style估计要全部重新做，目前的橙色不好看,目前先凑合用，后续如果我们还是要把触摸和鼠标界面分开，否则很难布局，这块最好找人设计一下。done
+Animation:
+跳帧，用10%速度尤其明显，查一下什么原因。目前无法完全解决跳帧问题，调整了fill mode,timing-function,同时chrome://flags/里面改变了几个默认渲染参数，
+用处不大，在performance里面可见的cpu消耗很低，但是依然会有fps降低到30的情况。
+Layout:
+System info card, console div's height can auto change by system alarm div. (done)
+Performance:
+目前看起来xhgrid和parameter/location的 switchery initialize比较吃资源，已经知道资源怎么看，后续优化，parameter/location这边已经优化好，其他待续
+xhgrid,是一个大问题，目前由于他的渲染完成之前不会返回，那么就有一个问题，我们是在什么时候对他进行初始化呢？
+选择1：后台默许，但是目前动画动作没有和main做挂钩，也就是main不知道什么时候会触发动画，这样后台在调用xhgrid的时候会跑进来一个动画，依然卡顿。
+选择2：前台渲染，当动画完成之后再渲染，把钩子做到history里面去，也是一个办法不过动画会很不好看。
+修改了选择2，然后对浏览器做以下优化，结果会好很多（测试CPU4倍减速，效果依然可以接受）
+chrome://flags/#enable-gpu-rasterization设置Force-enable for all layers
+chrome://flags/#enable-zero-copy设置enabled
+
+Calibration.json:
+根据建林的request修正
+
+目前有部分显示bug: 问题没有找到，重启浏览器不见，怀疑和开了某些性能相关的相关
+
+离开校准要增加放弃 done
+增加debug
+实时图片增加模糊度 done
+
+[我们要考虑几个问题，
+在结果界面里面 我们有训练参数
+系统里面也有训练参数
+那就是，开机的时候会有几个状态，目前修改设计：
+界面打开，默认应该是空的界面，额外加一个按钮，“获得最后一次运行的配置”
+增加消息，last history] done
+
+
+Debug在原设计中是有状态切换的，所以每个命令都必须要切状态，发命令，再切回状态。
+这样的话前台需要一个遮罩来锁，再命令没有回复之前这个遮罩要遮挡所有的行为。done
+
+目前有一个问题是，上次如果在run的时候退出了，后续进来当前设置是空面板，这个是不对的。
+需要一个锁定的启动界面，同时增加一个启动中的状态 done
+
+做一个Mqtt的带promise的钩子(done)
+
+[*]图片性能还是不行，再看看有什么办法
+
+增加了mqtt 发和收之间阻塞的例子，debug run命令在一条http消息之后增加了3个mqtt循序运行的demo，3个消息分别发送并返回，然后才会return http消息。
+
+青山提到跳出alert不对，这个检查一下(done)
+
+启动界面，mqtt加一个触发 (done)
+
+图片刷新更新，但是感觉会有问题，这块我需要看看Jquery和react的冲突
+
+如果一个结果被收回，但是在动画没有消失的时候客户点了下一个结果，会造成图片控件的初始化失败
+
+目前我们设置了10个叠层，这样真实照片大约在10个发送帧之后出现，会不会延迟太大了？
+
+遮罩已经改变到全局，全局应该复用一个遮罩
+
+
+
+
+
