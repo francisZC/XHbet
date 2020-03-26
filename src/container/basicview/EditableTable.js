@@ -238,11 +238,10 @@ export default class EditableTable extends React.Component{
                           rowKeys=Object.keys(data)
                           return <tr key={id}>
                               {rowValue.map((val,key)=>{
-                                console.log(rowKeys[key])
                                 let chooseOne = rowKeys[key].indexOf('edit')
-                                console.log(chooseOne)
+                                
                                 return<th style={{fontWeight:"normal", textAlign:"center"}} key={key} data-editable="true">
-                                   {chooseOne==-1? val:(<a href='#' id={tableName+rowKeys[key]+id} data-type='text' data-pk='1'>{val}</a>)}
+                                   {chooseOne==-1? val:(<a href='#' id={rowKeys[key]+tableName+id}  data-pk='1'>{val}</a>)}
                             
                                 </th>
                           })}
@@ -252,7 +251,8 @@ export default class EditableTable extends React.Component{
                 </tbody>
             </table>
             <div>{this.state.boardstatus[tableName].button.map((btn,id)=>{
-              return<button key={id} type="button" className="btn btn-primary" style={{float:"right", marginRight:"5px"}}>{btn}</button>
+              console.log(btn, typeof(btn))
+              return<button id={btn.replace(/\s*/g,"")} key={id} type="button" className="btn btn-primary" style={{float:"right", marginRight:"5px"}}>{btn}</button>
             })}</div>
           </div>
          
@@ -262,8 +262,34 @@ export default class EditableTable extends React.Component{
   }
   
   editTable = function () {
-
-    $("a").editable();
+    
+    $("a[id^='W']").editable(
+      
+      {
+        type: 'select',
+        value: 2,    
+        source: [
+              {value: 1, text: '0'},
+              {value: 2, text: '1'}
+           ]
+      }
+    );
+    $("a[id^='T']").editable(
+      
+      {
+        type: 'select',
+        value: 2,    
+        source: [
+              {value: 1, text: 'F'},
+              {value: 2, text: 'S'}
+           ]
+      }
+    );
+    $("a").editable(
+      
+  
+      
+      );
   }
     
 
