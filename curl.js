@@ -19,27 +19,27 @@ async function jsonParse(res) {
     return await res.json().then(jsonResult => ({ res, jsonResult }));
 }
 
-async function fetchFromBoard(postData){
-    let res;
-    fetch(requestURL,
-    {
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json', 
-            'Connection': 'close'
-        },
-        body: JSON.stringify(postData)
-    })//.then(jsonParse)
-    .then((data)=>{ res=data; console.log(res)})
+// async function fetchFromBoard(postData){
+//     let res;
+//     fetch(requestURL,
+//     {
+//         method:'POST',
+//         headers:{
+//             'Content-Type':'application/json', 
+//             'Connection': 'close'
+//         },
+//         body: JSON.stringify(postData)
+//     })//.then(jsonParse)
+//     .then((data)=>{ res=data; console.log(res)})
 
-    //.then(fetchlist)
-    .catch( (error) => {
-        console.log('request error', error);
-        return { error };
-    });
-    return res;
+//     //.then(fetchlist)
+//     .catch( (error) => {
+//         console.log('request error', error);
+//         return { error };
+//     });
+//     return res;
     
-}
+// }
 
 
 var curlJSON = JSON.parse(jsReadFiles("./curl.json"));
@@ -61,7 +61,6 @@ var jsonInputData = {
 
 
 async function processCurls( ){
-    let n =0;
     for(data in curlJSON["steps"]){
         try{
             jsonInputData["parContent"] = curlJSON["steps"][data]['parContent']
@@ -78,8 +77,7 @@ async function processCurls( ){
             console.log(result);
             let jsonoutput = await result.json();//await jsonParse(result);
             console.log(JSON.parse(JSON.stringify(jsonoutput))["parContent"])
-            n++;
-            console.log(n,"times")
+    
             if(JSON.parse(JSON.stringify(jsonoutput))["parContent"]["result"]<0){
                 break;
             }
