@@ -1,46 +1,69 @@
 {
 
-    "mode":"Connect",
+   "Connect":{
+        "steps":[
+            {
+                "cuuar":"StartUboot",
+                "parContent":{"cmd": "start_comm", "para": {"timeOutCnt": 30}}
+            },
+            {
+                "cuuar":"Get",
+                "parContent":{"cmd": "gets", "para": {"timeOutCnt": 30}}
+            },
+            {
+                "cuuar":"GetVersionRDPStatus",
+                "parContent":{"cmd": "get_version_rdp_status", "para": {"timeOutCnt": 30}}
+            },
+            {
+                "cuuar":"GetID",
+                "parContent":{"cmd": "getid", "para": {"timeOutCnt": 30}}
+            },
+            {
+                "cuuar":"ReadoutUnprotect",
+                "parContent":{"cmd": "read_unprotect", "para": {"timeOutCnt": 30}}
+            },
+            {
+                "cuuar":"StartUboot",
+                "parContent":{"cmd": "start_comm", "para": {"timeOutCnt": 30}}
+            },
+            {
+                "cuuar":"GetVersionRDPStatus",
+                "parContent":{"cmd": "get_version_rdp_status", "para": {"timeOutCnt": 30}}
+            },
+            {
+                "cuuar":"WriteUnprotect",
+                "parContent":{"cmd": "startwrite_protect_comm", "para": {"timeOutCnt": 30,"sectorList": [1,2]}}
+            },
+            {
+                "cuuar":"StartUboot",
+                "parContent":{"cmd": "start_comm", "para": {"timeOutCnt": 30}}
+            },
+            {
+                "cuuar":"GetVersionRDPStatus",
+                "parContent":{"cmd": "get_version_rdp_status", "para": {"timeOutCnt": 30}}
+            }
+        ]
+   },
+   "Erase":{
     "steps":[
-        {
-            "cuuar":"StartUboot",
-            "parContent":{"cmd": "start_comm", "para": {"timeOutCnt": 30}}
-        },
         {
             "cuuar":"Get",
             "parContent":{"cmd": "gets", "para": {"timeOutCnt": 30}}
         },
         {
-            "cuuar":"GetVersionRDPStatus",
-            "parContent":{"cmd": "get_version_rdp_status", "para": {"timeOutCnt": 30}}
+            "cuuar":"ExtendedErase",
+            "parContent":{"cmd": "extEraseMem", "para": {"timeOutCnt": 90,"nbrPages": 2, "pagesList": ["0x0001", "0x0002"]}}
         },
         {
-            "cuuar":"GetID",
-            "parContent":{"cmd": "getid", "para": {"timeOutCnt": 30}}
-        },
-        {
-            "cuuar":"ReadoutUnprotect",
-            "parContent":{"cmd": "read_unprotect", "para": {"timeOutCnt": 30}}
+            "cuuar":"Erase",
+            "parContent":{"cmd": "erasemem", "para": {"timeOutCnt": 90,"nbrPages": 4, "pagesList": [1,2]}}
         },
         {
             "cuuar":"StartUboot",
             "parContent":{"cmd": "start_comm", "para": {"timeOutCnt": 30}}
-        },
-        {
-            "cuuar":"GetVersionRDPStatus",
-            "parContent":{"cmd": "get_version_rdp_status", "para": {"timeOutCnt": 30}}
-        },
-        {
-            "cuuar":"WriteUnprotect",
-            "parContent":{"cmd": "startwrite_protect_comm", "para": {"timeOutCnt": 30,"sectorList": [1,2]}}
-        },
-        {
-            "cuuar":"StartUboot",
-            "parContent":{"cmd": "start_comm", "para": {"timeOutCnt": 30}}
-        },
-        {
-            "cuuar":"GetVersionRDPStatus",
-            "parContent":{"cmd": "get_version_rdp_status", "para": {"timeOutCnt": 30}}
         }
     ]
+}
+
+   
 }
