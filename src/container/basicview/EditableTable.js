@@ -262,7 +262,7 @@ export default class EditableTable extends React.Component{
   }
   
   editTable = function () {
-    
+    //W and T table have select and options
     $("a[id^='W']").editable(
       
       {
