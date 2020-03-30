@@ -1,6 +1,8 @@
 import React from "react"
 import "./Editable.css"
 import Editable from 'react-x-editable';  
+import { jsondeepCopy } from '../../util/util.js';
+var urlpost = "http://127.0.0.1:8888/";
 export default class EditableTable extends React.Component{
   constructor(props) {
     super(props)
@@ -13,8 +15,8 @@ export default class EditableTable extends React.Component{
               "columns":["progess","status"],
               "rowdata":[
                 {
-                  "progress":20,
-                  "status":"OK"
+                  "progress":0,
+                  "status":"NOK"
                 }
               ],
               "button":["Connect"]
@@ -26,8 +28,8 @@ export default class EditableTable extends React.Component{
               "rowdata":[
                 {
                 
-                  "progress":100,
-                  "status":"Erased OK"
+                  "progress":0,
+                  "status":"Erased NOK"
                   
                 }
               ],
@@ -41,16 +43,16 @@ export default class EditableTable extends React.Component{
                      "method":"backup",   
                     "filename_edit":"stm32f207_backup.bin",
                     "address_edit":"0x80000000",
-                    "size":2048,
-                    "progress":100,
+                    "size_edit":2048,
+                    "progress":0,
                     "status":"Saved OK"
                   },
                   {
                     "method":"restore",
                     "filename_edit":"test.bin",
                     "address_edit":"0x80000000",
-                    "size":2048,
-                    "progress":100,
+                    "size_edit":2048,
+                    "progress":0,
                     "status":"Saved OK"
                   }
               ],
@@ -69,7 +71,7 @@ export default class EditableTable extends React.Component{
                 "file/string_edit":"startjump.bin",
                 "address_edit":"0x80000000",
                 "size":2048,
-                "progress":100,
+                "progress":0,
                 "status":"Verify OK"
               },
               {
@@ -80,7 +82,7 @@ export default class EditableTable extends React.Component{
                 "file/string_edit":"startjump.bin",
                 "address_edit":"0x80000000",
                 "size":2048,
-                "progress":100,
+                "progress":0,
                 "status":"Verify OK"
               }
             ],
@@ -192,7 +194,8 @@ export default class EditableTable extends React.Component{
       
     };
     
-    this.renderTable = this.renderTable.bind(this)
+    this.renderTable = this.renderTable.bind(this);
+    this.editTable = this.editTable.bind(this);
   };
   componentDidMount(){
     console.log("componentWillUpdate------")
@@ -217,7 +220,7 @@ export default class EditableTable extends React.Component{
         tableList.push(
           <div>
               <table className="table table-striped table-bordered table-hover" id='Editable' key={tableName}>
-                <caption style={{align:"center"}}>{this.state.boardstatus[tableName].title}</caption>
+                <caption style={{fontFamily:"Sans-serif",fontSize:"20px",fontWeight:"bold"}}>{this.state.boardstatus[tableName].title}</caption>
                   <thead >
                     <tr className="info">
                       {
@@ -239,10 +242,8 @@ export default class EditableTable extends React.Component{
                           return <tr key={id}>
                               {rowValue.map((val,key)=>{
                                 let chooseOne = rowKeys[key].indexOf('edit')
-                                
                                 return<th style={{fontWeight:"normal", textAlign:"center"}} key={key} data-editable="true">
                                    {chooseOne==-1? val:(<a href='#' id={rowKeys[key]+tableName+id}  data-pk='1'>{val}</a>)}
-                            
                                 </th>
                           })}
                           </tr>
@@ -251,8 +252,8 @@ export default class EditableTable extends React.Component{
                 </tbody>
             </table>
             <div>{this.state.boardstatus[tableName].button.map((btn,id)=>{
-              console.log(btn, typeof(btn))
-              return<button id={btn.replace(/\s*/g,"")} key={id} type="button" className="btn btn-primary" style={{float:"right", marginRight:"5px"}}>{btn}</button>
+              return<button id={btn.replace(/\s*/g,"")} key={id} type="button" className="btn btn-primary" style={{float:"right", marginRight:"5px"}}
+              onClick={this.handleClick.bind(this)}>{btn}</button>
             })}</div>
           </div>
          
@@ -261,7 +262,7 @@ export default class EditableTable extends React.Component{
     return tableList;
   }
   
-  editTable = function () {
+  editTable () {
     //W and T table have select and options
     $("a[id^='W']").editable(
       
@@ -286,16 +287,61 @@ export default class EditableTable extends React.Component{
       }
     );
     $("a").editable(
-      
-  
-      
+        {
+          validate:function (value) {
+          }
+        }
       );
   }
+
+  jsonParse(res) {
+    return res.json().then(jsonResult => ({ res, jsonResult }));
+  }
+
+  //click button and fetch data back from 127.0.0.1:8888
+  handleClick(){
+    let buttonObj = document.querySelectorAll('button')
+
+    for(let index in buttonObj){
+      let btnID = buttonObj[index].id;
+      let temp = jsondeepCopy(this.state.boardstatus);
+      temp['Connect']['rowdata'][0]['progress']
+
+      switch(btnID){
+        case "Connect":
+          console.log('before fetch')
+          let postdata ='';
+          let fetRes = fetch(urlpost+btnID,
+            {
+                method:'POST',
+                headers:{
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                mode:'no-cors',
+                body: postdata
+            })
     
-
-
-  
+       
+            fetRes.then(data=>{return data})
+              .then((result)=>{
+                console.log("222222")
+                console.log(result)
+                console.log((JSON.parse(result)))
+                temp['Connect']['rowdata'][0]['progress'] = 40;
+                temp['Connect']['rowdata'][0]['status'] = "NOK"
+                // console.log(this.state.boardstatus['Connect']['rowdata'][0]['progress'])
+                this.setState({
+                  boardstatus:temp
+                })
+              })
+              .catch( (error) => {
+                  console.log('request error', error);
+                  return { error };
+              });
+        break;
+        
+      }
+    }
+  }
 }
-
-
-

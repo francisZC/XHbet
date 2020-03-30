@@ -7,10 +7,14 @@ const req = require('./ejs/req');
 const mqttlib = require('./ejs/mqtt');
 const querystring = require('querystring');
 const fetch = require('node-fetch')
-const requestURL = "http://192.168.1.141:7999/post"
+const requestURL = "http://localhost:7999/post"
 const requestURL_1 = "http://localhost:8889/post" 
-
-
+var resultRet = {
+    "process": 0,
+    "status":""
+}
+const processVal = [0,10,20,30,50,60,70,80,90,95,100];
+var command,reqData
 function jsReadFiles(files) {
     let output = fs.readFileSync(files, 'utf8');
     return output;
@@ -44,7 +48,6 @@ async function jsonParse(res) {
 
 var curlJSON = JSON.parse(jsReadFiles("./curl.json"));
 
-// console.log(curlJSON)
 var jsonInputData = {
     "restTag": "suua", 
     "actionId": 30001, 
@@ -60,10 +63,14 @@ var jsonInputData = {
 
 
 
-async function processCurls( ){
-    for(data in curlJSON["steps"]){
+async function processCurls(command, reqData){
+    for(data in curlJSON[command]["steps"]){
+        let n = 0;
+        let resHex;
+        
         try{
-            jsonInputData["parContent"] = curlJSON["steps"][data]['parContent']
+            
+            jsonInputData["parContent"] = curlJSON[command]["steps"][data]['parContent']
             let result = await fetch(requestURL,
                 {
                     method:'POST',
@@ -74,24 +81,31 @@ async function processCurls( ){
                     body: JSON.stringify(JSON.stringify(jsonInputData))
                 });
             //await fetchFromBoard(JSON.stringify(jsonInputData));
-            console.log(result);
+     
             let jsonoutput = await result.json();//await jsonParse(result);
-            console.log(JSON.parse(JSON.stringify(jsonoutput))["parContent"])
-    
-            if(JSON.parse(JSON.stringify(jsonoutput))["parContent"]["result"]<0){
-                break;
+            console.log('------',(JSON.parse(JSON.stringify(jsonoutput["parContent"]))))
+            resHex = JSON.stringify(jsonoutput["parContent"]["hex"]);
+            console.log("hex is",resHex)
+            if(resHex.indexOf("79")!=-1){
+                n++;
+                resultRet["process"] = processVal[n];
+                resultRet["status"] = "Connecting";
+                if(n>10){
+                    resultRet["status"] = "OK";
+                }
+                
             }
-            
+            else{
+                console.log(JSON.parse(JSON.stringify(jsonoutput))["parContent"]["hex"])
+                resultRet["process"] = 0
+                resultRet["status"] = "Time out";
+
+            }
+            return resultRet;
         }catch(e) {
             console.log(e);
             break;
         }
     }
 }
-processCurls()
-
-
-
-
-
-
+exports.processCurls = processCurls

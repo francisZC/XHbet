@@ -68,29 +68,28 @@ class App extends Component{
 
 }
 ReactDOM.render(<App/>, document.getElementById('app'))
-fetchJSON()
 function jsonParse(res) {
     return res.json().then(jsonResult => ({ res, jsonResult }));
 }
-function fetchJSON(){
+// function fetchJSON(){
         
-        fetch('http://127.0.0.1:8888/resource/json/data.json',
-            {
-                method:'POST',
-                headers:{
-                    'Access-Control-Allow-Origin':'*',
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                'mode': 'no-cors',
-                body:''
-            }).then(jsonParse)
-            .then((data)=>{console.log(data)})
-            //.then(fetchlist)
-            .catch( (error) => {
-                console.log('request error', error);
-                return { error };
-            });
-}
+//         fetch('http://127.0.0.1:8888/resource/json/data.json',
+//             {
+//                 method:'POST',
+//                 headers:{
+//                     'Access-Control-Allow-Origin':'*',
+//                     'Accept': 'application/json',
+//                     'Content-Type': 'application/json',
+//                 },
+//                 'mode': 'no-cors',
+//                 body:''
+//             }).then(jsonParse)
+//             .then((data)=>{console.log(data)})
+//             //.then(fetchlist)
+//             .catch( (error) => {
+//                 console.log('request error', error);
+//                 return { error };
+//             });
+// }
 
 

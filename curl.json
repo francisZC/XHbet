@@ -55,10 +55,6 @@
             "parContent":{"cmd": "extEraseMem", "para": {"timeOutCnt": 90,"nbrPages": 2, "pagesList": ["0x0001", "0x0002"]}}
         },
         {
-            "cuuar":"Erase",
-            "parContent":{"cmd": "erasemem", "para": {"timeOutCnt": 90,"nbrPages": 4, "pagesList": [1,2]}}
-        },
-        {
             "cuuar":"StartUboot",
             "parContent":{"cmd": "start_comm", "para": {"timeOutCnt": 30}}
         }
