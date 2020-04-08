@@ -253,10 +253,17 @@ export default class EditableTable extends React.Component{
         case "TOBOOT_CFG_APP":
           var btnName =  event.target.name
           var getAllA = document.querySelectorAll("a")
+          for(var idx in getAllA){
+            get
+          }
+          console.log(btnID,fileName,address,size )
+          break;
+        case "TOBOOT_CFG_FAC":
+          var btnName =  event.target.name
+          var getAllA = document.querySelectorAll("a")
           
           console.log(btnID,fileName,address,size )
           break;
-
         case "ReadandSave":
           let btnName =  event.target.name
           let getAllW = document.querySelectorAll("input[id^='W_editReadFlash']:checked")
@@ -309,6 +316,7 @@ export default class EditableTable extends React.Component{
           }
           
           break;
+        
           
       }
     
