@@ -2,211 +2,56 @@ import React from "react"
 import "./Editable.css"
 import Editable from 'react-x-editable';  
 import { jsondeepCopy } from '../../util/util.js';
-var urlpost = "http://127.0.0.1:8888/";
+import { instanceOf } from "prop-types";
+// import {OnOff} from "jquery.onoff"
+// import Switch from "react-switch"
+var urlpost = "http://localhost:8888/";
 export default class EditableTable extends React.Component{
   constructor(props) {
     super(props)
-
     this.state = {
       //empty column is for button
-      boardstatus:{
-          "Connect":{
-              "title":"Step1 Connect to the board",
-              "columns":["progess","status"],
-              "rowdata":[
-                {
-                  "progress":0,
-                  "status":"NOK"
-                }
-              ],
-              "button":["Connect"]
-              
-          },
-          "Erase":{
-              "title":"Step2 Before burn anything to FLASH, Erase Full Chip",
-              "columns":["progress","status"],
-              "rowdata":[
-                {
-                
-                  "progress":0,
-                  "status":"Erased NOK"
-                  
-                }
-              ],
-              "button":["Erase Full Chip"]
-              
-          },
-          "Backup":{
-               "columns":["method","filename","address","size","progress","status"],
-             "rowdata":[
-                   { 
-                     "method":"backup",   
-                    "filename_edit":"stm32f207_backup.bin",
-                    "address_edit":"0x80000000",
-                    "size_edit":2048,
-                    "progress":0,
-                    "status":"Saved OK"
-                  },
-                  {
-                    "method":"restore",
-                    "filename_edit":"test.bin",
-                    "address_edit":"0x80000000",
-                    "size_edit":2048,
-                    "progress":0,
-                    "status":"Saved OK"
-                  }
-              ],
-              "button":["Backup Full Chip","Restore Full Chip"]
-                
-          },
-          "Burn":{
-            "title":"Step4 Burn Flash via Section(W=1, Write, W=0,skip, T=F, from file, T=S, from Hex String)",
-            "columns":["index","W","T","type","file/string","address","size","progress","status"],
-            "rowdata":[
-              {
-                "index":0,
-                "W_edit":0,
-                "T_edit":"F",
-                "type":"STARTJUMP",
-                "file/string_edit":"startjump.bin",
-                "address_edit":"0x80000000",
-                "size":2048,
-                "progress":0,
-                "status":"Verify OK"
-              },
-              {
-                "index":1,
-                "W_edit":1,
-                "T_edit":"F",
-                "type":"STARTJUMP",
-                "file/string_edit":"startjump.bin",
-                "address_edit":"0x80000000",
-                "size":2048,
-                "progress":0,
-                "status":"Verify OK"
-              }
-            ],
-            "button":["Burn"]
-          },
-          "BootConfigEncoder":{
-            "title":"Step4.1 BOOT CONFIG ENCODER (PLEASE FILL ONLY GREEN CELL)",
-            "columns":["offset","length","type","name","value_input","value_calc","data_type","Fill","Temp","Valid"],
-            "rowdata":[
-                {
-                  "offset":0,
-                  "length":2,
-                  "type":"UINT32",
-                  "name":"initBurnFlag",
-                  "value_input_edit":"55AA55AA",
-                  "value_calc":"",
-                  "datatype":"hex",
-                  "Fill":"0000",
-                  "Temp":"0708",
-                  "Valid":4,
-                },
-                {
-                  "offset":0,
-                  "length":2,
-                  "type":"UINT32",
-                  "name":"initBurnFlag",
-                  "value_input_edit":"55AA55AA",
-                  "value_calc":"",
-                  "datatype":"hex",
-                  "Fill":"0000",
-                  "Temp":"0708",
-                  "Valid":4,
-                }
-            ],
-            "button":[
-              "TO BOOT_CFG_FAC",
-              "TO BOOT_CFG_APP"
-            ]
-          },
-          "CheckFileLength":{
-            "title":"Check File Length",
-            "columns":["IAP","FACTORY_LOAD","APP1_LOAD","APP2_LOAD","status"],
-            "rowdata":[
-              {
-                "IAP_edit":"iap.bin",
-                "FACTORY_LOAD_edit":"facotry.bin",
-                "APP1_LOAD_edit":"app1_load.bin",
-                "APP2_LOAD_edit":"app2_load.bin",
-                "status":"Check OK"
-              }              
-            ],
-            "button":["Check File Length"]            
-          },
-          "ReadFlash":{
-            "title":"Step5 Read Flash via Section",
-            "columns":["index","W","T","type","file/string","address","size","progress","status"],
-            "rowdata":[
-              {
-                "index":0,
-                "W_edit":0,
-                "T_edit":"F",
-                "type":"STARTJUMP",
-                "file/string_edit":"startjump.bin",
-                "address_edit":"0x80000000",
-                "size":2048,
-                "progress":100,
-                "status":"Verify OK",
-                
-              }        
-            ],
-            "button":["Read and Save"]        
-          },
-          "BootConfigDecoder":{
-            "title":"Step5.1 BOOT CONFIG DECODER",
-            "columns":["offset","length","type","name","value_output","value_calc","data_type","Fill","Temp","Valid"],
-            "rowdata":[
-                {
-                  "offset":0,
-                  "length":2,
-                  "type":"UINT32",
-                  "name":"initBurnFlag",
-                  "value_input_edit":"55AA55AA",
-                  "value_calc":"",
-                  "datatype":"hex",
-                  "Fill":"0000",
-                  "Temp":"0708",
-                  "Valid":4,
-                },
-                {
-                  "offset":0,
-                  "length":2,
-                  "type":"UINT32",
-                  "name":"initBurnFlag",
-                  "value_input_edit":"55AA55AA",
-                  "value_calc":"",
-                  "datatype":"hex",
-                  "Fill":"0000",
-                  "Temp":"0708",
-                  "Valid":4,
-                }
-                
-            ],
-            "button":[
-              "FROM BOOT_CFG_FAC",
-              "FROM BOOT_CFG_APP"
-            ]
-          }
-      }
+      boardstatus: ''
       
     };
-    
+    this.fetchJSON = this.fetchJSON.bind(this);
     this.renderTable = this.renderTable.bind(this);
     this.editTable = this.editTable.bind(this);
+    this.jsonParse = this.jsonParse.bind(this);
   };
   componentDidMount(){
-    console.log("componentWillUpdate------")
-    this.editTable()
+    this.fetchJSON()
   }
+  
+  
+  fetchJSON(){   
+    fetch('http://localhost:8888/resource/json/tableRawData.json',
+        {
+            method:'POST',
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body:''
+        }).then((data)=>{  
+            return data.json()
+        })
+        .then((res)=>{
+
+            this.setState({
+              boardstatus:JSON.parse(res)
+            })
+        })
+        .catch( (error) => {
+            console.log('request error', error);
+            return { error };
+        });
+  }
+
   
   render(){
     
     let tableList = this.renderTable()
-    
-
     return(
       <div style={{marginRight:"20px"}}>
         {tableList}
@@ -215,11 +60,12 @@ export default class EditableTable extends React.Component{
   }
 
    renderTable() {
+     console.log('this is render table')
     var tableList = [];
       for(var tableName in this.state.boardstatus ){
         tableList.push(
           <div>
-              <table className="table table-striped table-bordered table-hover" id='Editable' key={tableName}>
+              <table style={{tableLayout: 'fixed'}} className="table table-striped table-bordered table-hover" id='Editable' key={tableName}>
                 <caption style={{fontFamily:"Sans-serif",fontSize:"20px",fontWeight:"bold"}}>{this.state.boardstatus[tableName].title}</caption>
                   <thead >
                     <tr className="info">
@@ -242,8 +88,8 @@ export default class EditableTable extends React.Component{
                           return <tr key={id}>
                               {rowValue.map((val,key)=>{
                                 let chooseOne = rowKeys[key].indexOf('edit')
-                                return<th style={{fontWeight:"normal", textAlign:"center"}} key={key} data-editable="true">
-                                   {chooseOne==-1? val:(<a href='#' id={rowKeys[key]+tableName+id}  data-pk='1'>{val}</a>)}
+                                return<th id={rowKeys[key]+tableName+id} style={{fontWeight:"normal", textAlign:"center", textOverflow:"ellipsis",overflow:"hidden", whiteSpace:"nowrap"}} key={key} data-editable="true">
+                                   {chooseOne==-1? val:(<a href='#' id={rowKeys[key]+tableName+id} style={{textOverflow:"ellipsis"}} data-pk='1'data-type="text">{val}</a>)}
                                 </th>
                           })}
                           </tr>
@@ -252,8 +98,8 @@ export default class EditableTable extends React.Component{
                 </tbody>
             </table>
             <div>{this.state.boardstatus[tableName].button.map((btn,id)=>{
-              return<button id={btn.replace(/\s*/g,"")} key={id} type="button" className="btn btn-primary" style={{float:"right", marginRight:"5px"}}
-              onClick={this.handleClick.bind(this)}>{btn}</button>
+              return<button id={btn.name.replace(/\s*/g,"")} key={id} type="button" name={btn.abbr} className="btn btn-primary" style={{float:"right", marginRight:"5px"}}
+              onClick={this.handleClick.bind(this)}>{btn.name}</button>
             })}</div>
           </div>
          
@@ -261,31 +107,55 @@ export default class EditableTable extends React.Component{
     }
     return tableList;
   }
-  
+
+   componentDidUpdate(){
+  //after the second time render(fetch json from server and update this.state.boardstatus)
+   this.editTable()
+     
+  }
+
   editTable () {
     //W and T table have select and options
-    $("a[id^='W']").editable(
-      
-      {
-        type: 'select',
-        value: 2,    
-        source: [
-              {value: 1, text: '0'},
-              {value: 2, text: '1'}
-           ]
+    let $inputW = $("a[id^='W']")
+    let $inputT = $("a[id^='T']")
+    let insertRadioW = "", insertRadioT = "";
+    console.log('--------input T-----------',$inputT)
+    for(let i=0; i<$inputW.length;i++){
+      let htmlW = $inputW.get(i).innerHTML
+      let textW = $inputW.get(i).innerText
+      let htmlT = $inputT.get(i).innerHTML
+      let textT = $inputT.get(i).innerText
+      let idW = $inputW.get(i).id
+      let idT = $inputT.get(i).id
+
+      if(textW == "0"){
+        insertRadioW  = "<input type='radio' style='display: inline-block' checked='checked' name ='write"+2*i+"'  id='"+idW+"' />"+0+" "+
+        "<input type='radio' style='display: inline-block' name ='write"+2*i+"' id='"+idW+"' />"+1
+      }else if(textW == "1"){
+        insertRadioW  = "<input type='radio' style='display: inline-block' name ='write"+2*i+"'  id='"+idW+"' />"+0+" "+
+      "<input type='radio' style='display: inline-block'  checked='checked' name ='write"+2*i+"' id='"+idW+"' />"+1
       }
-    );
-    $("a[id^='T']").editable(
       
-      {
-        type: 'select',
-        value: 2,    
-        source: [
-              {value: 1, text: 'F'},
-              {value: 2, text: 'S'}
-           ]
+      if(textT == "F"){
+        insertRadioT  = "<input type='radio' style='display: inline-block' checked='checked' name ='filetype"+2*i+1+"'  id='"+idT+"' />"+"F"+" "+
+      "<input type='radio' style='display: inline-block' name ='filetype"+2*i+1+"' id='"+idT+"' />"+"S"
+      }else if(textT == "S"){
+        insertRadioT  = "<input type='radio' style='display: inline-block'  name ='filetype"+2*i+1+"'  id='"+idT+"' />"+"F"+" "+
+      "<input type='radio' style='display: inline-block' checked='checked' name ='filetype"+2*i+1+"' id='"+idT+"' />"+"S"
       }
-    );
+      
+      
+      $inputW[i].outerHTML = insertRadioW
+      $inputT[i].outerHTML = insertRadioT
+   
+     
+    }
+
+    // $('input[type=checkbox]').onoff();
+    
+
+
+
     $("a").editable(
         {
           validate:function (value) {
@@ -300,16 +170,12 @@ export default class EditableTable extends React.Component{
 
   //click button and fetch data back from 127.0.0.1:8888
   handleClick(){
-    let buttonObj = document.querySelectorAll('button')
-
-    for(let index in buttonObj){
-      let btnID = buttonObj[index].id;
+    var fileName, address, size
+      let btnID = event.target.id;
       let temp = jsondeepCopy(this.state.boardstatus);
-      temp['Connect']['rowdata'][0]['progress']
-
       switch(btnID){
         case "Connect":
-          console.log('before fetch')
+        case "EraseFullChip":
           let postdata ='';
           let fetRes = fetch(urlpost+btnID,
             {
@@ -318,30 +184,133 @@ export default class EditableTable extends React.Component{
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
-                mode:'no-cors',
                 body: postdata
             })
-    
-       
-            fetRes.then(data=>{return data})
-              .then((result)=>{
-                console.log("222222")
-                console.log(result)
-                console.log((JSON.parse(result)))
-                temp['Connect']['rowdata'][0]['progress'] = 40;
-                temp['Connect']['rowdata'][0]['status'] = "NOK"
-                // console.log(this.state.boardstatus['Connect']['rowdata'][0]['progress'])
+            fetRes.then(res=>res.json())  //res.json() can only be called once, can't be called in console.log() before this.
+
+              .then((data)=>{
+                console.log('----return-----',data, typeof(data))
+                temp['Connect']['rowdata'][0]['progress'] = data['progress'];
+                temp['Connect']['rowdata'][0]['status'] = data['status'];
                 this.setState({
                   boardstatus:temp
                 })
               })
+              
               .catch( (error) => {
                   console.log('request error', error);
                   return { error };
               });
-        break;
-        
+          break;
+
+        case "RestoreFullChip":
+        case "BackupFullChip":
+          var btnName =  event.target.name
+          var getAllA = document.querySelectorAll("a")
+          try{
+            for(var idx in getAllA){
+              if(getAllA[idx].id == undefined)
+                break;
+              if(getAllA[idx].id.indexOf(btnName)==0 && getAllA[idx].id.indexOf('filename')!=-1){
+                fileName = getAllA[idx].innerHTML
+              }
+              if(getAllA[idx].id.indexOf(btnName)==0 && getAllA[idx].id.indexOf('address')!=-1){
+                address = getAllA[idx].innerHTML
+              }
+              if(getAllA[idx].id.indexOf(btnName)==0 && getAllA[idx].id.indexOf('size')!=-1){
+                size = getAllA[idx].innerHTML
+              }
+            }
+          }
+          catch(error){
+            console.log(error)
+          }          
+          console.log(btnID,fileName,address,size )
+          break;
+
+        case "Burn":
+          var btnName =  event.target.name
+          var getAllA = document.querySelectorAll("a")
+          try{
+            for(var idx in getAllA){
+              if(getAllA[idx].id == undefined)
+                break;
+              console.log(btnName)
+              if(getAllA[idx].id.indexOf(btnName)!=-1 && getAllA[idx].id.indexOf('file/string')!=-1){
+                fileName = getAllA[idx].innerHTML
+              }
+              if(getAllA[idx].id.indexOf(btnName)!=-1 && getAllA[idx].id.indexOf('address')!=-1){
+                address = getAllA[idx].innerHTML
+              }
+            }
+          }
+          catch(error){
+            console.log(error)
+          }          
+          console.log(btnID,fileName,address,size )
+          break;
+
+        case "TOBOOT_CFG_APP":
+          var btnName =  event.target.name
+          var getAllA = document.querySelectorAll("a")
+          
+          console.log(btnID,fileName,address,size )
+          break;
+
+        case "ReadandSave":
+          let btnName =  event.target.name
+          let getAllW = document.querySelectorAll("input[id^='W_editReadFlash']:checked")
+          let getAllT = document.querySelectorAll("input[id^='T_editReadFlash']:checked")
+          let getAllF = document.querySelectorAll("a[id^='file/string']")
+          let getAllA = document.querySelectorAll("a[id^='address']")
+          let getAllS = document.querySelectorAll("a[id^='size']")
+          let postRead = {
+            fileName:'',
+            baseAddress:'',
+            sizeByte:''
+          }
+          for(let i=0; i<getAllW.length;i++){
+            let writeOrnot = getAllW[i].nextSibling.nodeValue.trim();
+            let inputType = getAllT[i].nextSibling.nodeValue.trim();
+            let fileNameorString = getAllF[i].text;
+            let baseAddress = getAllA[i].text;
+            let sizeByte = getAllS[i].text;
+            
+            postRead.fileName = fileNameorString;
+            postRead.baseAddress = baseAddress;
+            postRead.sizeByte =  sizeByte;
+            
+            if(writeOrnot=="1"){
+              if(inputType == "F"){
+                let fetRes = fetch(urlpost+btnID,
+                  {
+                      method:'POST',
+                      headers:{
+                          'Accept': 'application/json',
+                          'Content-Type': 'application/json',
+                          "Access-Control-Allow-Origin":"*",
+                          "Access-Control-Allow-Headers":"Content-Type,Access-Token"
+                      },
+                      body: JSON.stringify(postRead)
+                  })
+                  fetRes.then(res=>res.json())
+                    .then((data)=>{
+               
+                     
+                    })
+                    
+                    .catch( (error) => {
+                        console.log('request error', error);
+                        return { error };
+                    });
+              }
+            }
+            
+          }
+          
+          break;
+          
       }
-    }
+    
   }
 }

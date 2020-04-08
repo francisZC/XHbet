@@ -37,14 +37,10 @@ export default class Basicview extends Component {
         }
 
     }
-    
 
-    componentDidMount(){
-    }
-    componentDidUpdate(){
-    }
-   
+
     render() {
+        console.log('this is basic view')
         return (
             <div className="loginbackground view-level" style={{position:"relative",background:"#FFFFFF",height:this.state.height,maxHeight:this.state.height,width:'90%',margin:this.state.margin,display:this.state.hide,overflow:'scroll',overflowX:'hidden',overflowY:'hidden'}}>
                 <Status >

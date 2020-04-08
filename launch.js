@@ -3,14 +3,25 @@ const http = require("http");
 const fs = require('fs');
 const url = require('url');
 const path = require('path');
-const mqtt = require('mqtt');
-const req = require('./ejs/req');
-const mqttlib = require('./ejs/mqtt');
+// const mqtt = require('mqtt');
+// const req = require('./ejs/req');
+// const mqttlib = require('./ejs/mqtt');
 const querystring = require('querystring');
 const curlData = require('./curl')
 // const mfs = require("mz/fs");
+var resultRet = {
+    "progress": 0,
+    "status":""
+}
 
+const processVal = [0, 20, 30, 40, 50, 60, 70, 80, 90, 95];
+function jsReadFiles(files) {
+    let output = fs.readFileSync(files, 'utf8');
+    return output;
+}
+var curlJSON = JSON.parse(jsReadFiles("./curl.json"));
 
+const STM32_MAX_BYTES_TO_READ  = 255;
 var sio = require('socket.io');
 /**
  * const structure which will comes from json and build as base structure
@@ -24,27 +35,27 @@ var dataFromCurl;
 // req.prepareconf();
 
 
-async function listener(req, res) {
-    let range = req.headers["range"];
-    let p = path.resovle(__dirname, url.parse(url, true).pathname);
-    if (range) {
-        let [, start, end] = range.match(/(\d*)-(\d*)/);
-        try {
-            let statObj = await fs.stat(p);
-        } catch (e) {
-            res.end("Not Found");
-        }
-        let total = statObj.size;
-        start = start ? ParseInt(start) : 0;
-        end = end ? ParseInt(end) : total - 1;
-        res.statusCode = 206;
-        res.setHeader("Accept-Ranges", "bytes");
-        res.setHeader("Content-Range", `bytes ${start}-${end}/${total}`);
-        fs.createReadStream(p, { start, end }).pipe(res);
-    } else {
-        fs.createReadStream(p).pipe(res);
-    }
-}
+// async function listener(req, res) {
+//     let range = req.headers["range"];
+//     let p = path.resovle(__dirname, url.parse(url, true).pathname);
+//     if (range) {
+//         let [, start, end] = range.match(/(\d*)-(\d*)/);
+//         try {
+//             let statObj = await fs.stat(p);
+//         } catch (e) {
+//             res.end("Not Found");
+//         }
+//         let total = statObj.size;
+//         start = start ? ParseInt(start) : 0;
+//         end = end ? ParseInt(end) : total - 1;
+//         res.statusCode = 206;
+//         res.setHeader("Accept-Ranges", "bytes");
+//         res.setHeader("Content-Range", `bytes ${start}-${end}/${total}`);
+//         fs.createReadStream(p, { start, end }).pipe(res);
+//     } else {
+//         fs.createReadStream(p).pipe(res);
+//     }
+// }
 
 http.createServer(async function(request, response) {
     console.log('request url is: ',request.url);
@@ -56,27 +67,120 @@ http.createServer(async function(request, response) {
     }
     console.log('command is ', command)
     var Data="";
-    var reqData="";
-        request.on("data",function(chunk){
-            reqData+=chunk;
-        });
+
     switch(command){
         case "Connect":
-            result = curlData.processCurls(command,reqData);
+        case "EraseFullChip":
+            let jsonInputData = {
+                "restTag": "suua", 
+                "actionId": 30001, 
+                "parFlag": 1, 
+                "parContent": {
+                    "cmd": "start_comm", 
+                    "para": {
+                        "timeOutCnt": 30,
+                    }
+                }
+            }
             console.log("Client require :"+pathname);
-            // Data = fs.readFileSync("."+pathname,'utf-8');
-            // data = JSON.stringify(JSON.parse(Data));
-            result.then((data)=>{console.log(data)
-                response.writeHead(200, {"Content-Type":  'text/html;charset=utf-8'});
-                console.log(typeof(JSON.stringify(data)))
-                console.log('write data',JSON.stringify(data))
-                data = '{"process":0,"status":"OK out"}'
-                const buf = Buffer.from(data)
-                console.log('buf', buf)
-                response.write(buf);
-                response.end();
+            let n = 0;
+            //add "Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"Content-Type,Access-Token"s
+            response.writeHead(200, {"Content-Type": "application/json", "Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"Content-Type,Access-Token"});
+            for(data in curlJSON[command]["steps"]){
+
+                jsonInputData["parContent"] = curlJSON[command]["steps"][data]['parContent']
                 
+                var result = await curlData.processCurls(jsonInputData);
+                // console.log('return result*******', typeof(result))
+                // let jsonoutput = result.json;//await jsonParse(result);
+
+                resHex = JSON.stringify(result["parContent"]["result"]);
+                if(resHex>=0){
+                    
+                    resultRet["progress"] = processVal[n];
+                    resultRet["status"] = "Connecting";
+                    if(n>10){
+                        resultRet["status"] = "OK";
+                    }
+                    
+                }
+                else{
+                    n++;
+                    resultRet["progress"] = processVal[n];
+                    resultRet["status"] = "Time out";
+    
+                }
+                response.write(JSON.stringify(resultRet));
+                response.end(',');
+                
+            }
+            
+            break;
+        case "ReadandSave":
+            
+            request.on('data', async function (chunk) {
+                let jsonInputData = {
+                    "restTag": "suua", 
+                    "actionId": 30001, 
+                    "parFlag": 1, 
+                    "parContent": {
+                        "cmd": "readmem", 
+                        "para": {
+                            "timeOutCnt": 30,
+                        }
+                    }
+                }
+                Data += chunk;
+                Data = JSON.parse(Data);
+                let fileName = Data.fileName;
+                let baseAddress = parseInt(Data.baseAddress);
+                let sizeInByte = parseInt(Data.sizeByte, 16);
+                /** Recieve data type:
+                 * { 
+                 *      fileName: 'startjump.bin',
+                 *      baseAddress: '0x80000000',
+                 *      sizeByte: '192' 
+                 *  }
+                 */
+                let readFlashOffset = 0;
+                let nextLenToRead = STM32_MAX_BYTES_TO_READ;
+                let paraField = {'timeOutCnt':30, 'addr':0, 'nbrRead':1};
+                let address = baseAddress + readFlashOffset;
+
+                while(readFlashOffset < sizeInByte){
+                    paraField["addr"] = '0x'+ address.toString(16);
+                    paraField["nbrRead"] = nextLenToRead;
+                    jsonInputData["parContent"]["para"] = paraField;
+
+                    let result = await curlData.processCurls(jsonInputData);
+                    resHex = JSON.stringify(result["parContent"]["result"]);
+                    console.log('----------------save-return----',result,resHex)
+
+                    parContentResult =  result['parContent']['result']
+                    parContentHex = result['parContent']['hex']
+                    // readFlashOffset = readFlashOffset + result.length/2;
+                    if (readFlashOffset + STM32_MAX_BYTES_TO_READ > sizeInByte){
+                        nextLenToRead = sizeInByte - readFlashOffset
+                    }else{
+                        nextLenToRead = STM32_MAX_BYTES_TO_READ;
+                    }
+                }
+     
+                let data = 'this is first data to file';
+                // fs.writeFile(fileName, data, (err)=>{
+                //     if(err) throw err;
+                //     console.log('文件'+fileName+'已保存')
+                // })
             })
+            request.on('end',function () {
+            });
+    
+            break;
+        case ".json":
+            console.log("Client require :"+pathname);
+            Data = fs.readFileSync("."+pathname,'utf-8');
+            response.writeHead(200, {"Content-Type": "application/json", "Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"Content-Type,Access-Token"});            response.write(JSON.stringify(Data));
+            response.end();
             break;
         case ".css":
             console.log("Client require :"+pathname);
@@ -192,21 +296,12 @@ http.createServer(async function(request, response) {
             });
             break;
         default:
-            if(req.if_boot()){
-
-                console.log("Client require :"+pathname);
-                Data = fs.readFileSync('./booting.html','utf-8');
-                response.writeHead(200, {"Content-Type": "text/html"});
-                response.write(Data);
-                response.end();
-            }else{
-
-                console.log("Client require index.html:"+pathname);
-                Data = fs.readFileSync('./index.html','utf-8');
-                response.writeHead(200, {"Content-Type": "text/html"});
-                response.write(Data);
-                response.end();
-            }
+            console.log("Client require index.html:"+pathname);
+            Data = fs.readFileSync('./index.html','utf-8');
+            response.writeHead(200, {"Content-Type": "text/html"});
+            response.write(Data);
+            response.end();
+        
     }
 
 }).listen(8888);
