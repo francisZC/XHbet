@@ -94,112 +94,112 @@
             "offset":0, "length":4,"type":"UINT32", "name":"initBurnFlag","value_input_edit":"55AA55AA", "value_calc":"", "datatype":"hex", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":4, "length":20,"type":"char[20]", "name":"equLable","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":4, "length":20,"type":"char[20]", "name":"equLable","value_input_edit":"65717569706D656E745F6E616D655F5F78685F5F", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":24, "length":20,"type":"char[20]", "name":"custMnLable","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":24, "length":20,"type":"char[20]", "name":"custMnLable","value_input_edit":"65717569706D656E745F6E616D655F5F78685F5F", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":44, "length":2,"type":"UINT16", "name":"hwType","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":44, "length":2,"type":"UINT16", "name":"hwType","value_input_edit":"1800", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":46, "length":2,"type":"UINT16", "name":"hwPemId","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":46, "length":2,"type":"UINT16", "name":"hwPemId","value_input_edit":"3", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":48, "length":1,"type":"UINT8", "name":"swUpgradeFlag","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":48, "length":1,"type":"UINT8", "name":"swUpgradeFlag","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":49, "length":1,"type":"UINT8", "name":"swUpgPollId","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":49, "length":1,"type":"UINT8", "name":"swUpgPollId","value_input_edit":"2", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":50, "length":2,"type":"UINT16", "name":"rsv1","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":50, "length":2,"type":"UINT16", "name":"rsv1","value_input_edit":"1024", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":52, "length":4,"type":"UINT32", "name":"dlTotalLen","value_input_edit":"55AA55AA", "value_calc":"", "datatype":"hex", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":52, "length":4,"type":"UINT32", "name":"dlTotalLen","value_input_edit":"16384", "value_calc":"", "datatype":"hex", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":56, "length":4,"type":"UINT32", "name":"dlSegNbrMax","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":56, "length":4,"type":"UINT32", "name":"dlSegNbrMax","value_input_edit":"256", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":60, "length":4,"type":"UINT32", "name":"dlSegNbrIndex","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":60, "length":4,"type":"UINT32", "name":"dlSegNbrIndex","value_input_edit":"0", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":64, "length":4,"type":"UINT32", "name":"dlAppCksum","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":64, "length":4,"type":"UINT32", "name":"dlAppCksum","value_input_edit":"0", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":68, "length":4,"type":"UINT32", "name":"dlAppSegLen","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":68, "length":4,"type":"UINT32", "name":"dlAppSegLen","value_input_edit":"0", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":72, "length":4,"type":"UINT32", "name":"dlAppSwRelId","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":72, "length":4,"type":"UINT32", "name":"dlAppSwRelId","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":76, "length":4,"type":"UINT32", "name":"dlAppSwVerId","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":76, "length":4,"type":"UINT32", "name":"dlAppSwVerId","value_input_edit":"2", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":80, "length":4,"type":"UINT32", "name":"facLoadLen","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":80, "length":4,"type":"UINT32", "name":"facLoadLen","value_input_edit":"16384", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":84, "length":4,"type":"UINT32", "name":"facLoadRelId","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":84, "length":4,"type":"UINT32", "name":"facLoadRelId","value_input_edit":"2", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":88, "length":4,"type":"UINT32", "name":"facLoadVerId","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":88, "length":4,"type":"UINT32", "name":"facLoadVerId","value_input_edit":"2", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":92, "length":4,"type":"UINT32", "name":"facLoadCheckSum","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":92, "length":4,"type":"UINT32", "name":"facLoadCheckSum","value_input_edit":"1560", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":96, "length":4,"type":"UINT32", "name":"facLoadValid","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":96, "length":4,"type":"UINT32", "name":"facLoadValid","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":100, "length":4,"type":"UINT32", "name":"iapLoadLen","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":100, "length":4,"type":"UINT32", "name":"iapLoadLen","value_input_edit":"7516", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":104, "length":4,"type":"UINT32", "name":"iapLoadRelId","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":104, "length":4,"type":"UINT32", "name":"iapLoadRelId","value_input_edit":"2", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":108, "length":4,"type":"UINT32", "name":"iapLoadVerId","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":108, "length":4,"type":"UINT32", "name":"iapLoadVerId","value_input_edit":"3", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":112, "length":4,"type":"UINT32", "name":"iapLoadCheckSum","value_input_edit":"55AA55AA", "value_calc":"", "datatype":"hex", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":112, "length":4,"type":"UINT32", "name":"iapLoadCheckSum","value_input_edit":"234", "value_calc":"", "datatype":"hex", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":116, "length":4,"type":"UINT32", "name":"iapLoadValid","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":116, "length":4,"type":"UINT32", "name":"iapLoadValid","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":120, "length":4,"type":"UINT32", "name":"app1LoadLen","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":120, "length":4,"type":"UINT32", "name":"app1LoadLen","value_input_edit":"16384", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":124, "length":4,"type":"UINT32", "name":"app1LoadRelId","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":124, "length":4,"type":"UINT32", "name":"app1LoadRelId","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":128, "length":4,"type":"UINT32", "name":"app1LoadVerId","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":128, "length":4,"type":"UINT32", "name":"app1LoadVerId","value_input_edit":"2", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":132, "length":4,"type":"UINT32", "name":"app1LoadCheckSum","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":132, "length":4,"type":"UINT32", "name":"app1LoadCheckSum","value_input_edit":"34565", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":136, "length":4,"type":"UINT32", "name":"app1LoadValid","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":136, "length":4,"type":"UINT32", "name":"app1LoadValid","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":140, "length":4,"type":"UINT32", "name":"app2LoadLen","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":140, "length":4,"type":"UINT32", "name":"app2LoadLen","value_input_edit":"16384", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":144, "length":4,"type":"UINT32", "name":"app2LoadRelId","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":144, "length":4,"type":"UINT32", "name":"app2LoadRelId","value_input_edit":"3", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":148, "length":4,"type":"UINT32", "name":"app2LoadVerId","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":148, "length":4,"type":"UINT32", "name":"app2LoadVerId","value_input_edit":"4", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":152, "length":4,"type":"UINT32", "name":"app2LoadCheckSum","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":152, "length":4,"type":"UINT32", "name":"app2LoadCheckSum","value_input_edit":"2345", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":156, "length":4,"type":"UINT32", "name":"app2LoadValid","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":156, "length":4,"type":"UINT32", "name":"app2LoadValid","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":160, "length":16,"type":"UINT8[16]", "name":"cipherKey","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":160, "length":16,"type":"UINT8[16]", "name":"cipherKey","value_input_edit":"000102030405060708090A0B0C0D0E0F", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":176, "length":16,"type":"UINT8[16]", "name":"rsv","value_input_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":176, "length":16,"type":"UINT8[16]", "name":"rsv","value_input_edit":"000102030405060708090A0B0C0D0E0F", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           }
       ],
       "button":[{"abbr":"toFAC","name":"TO BOOT_CFG_FAC"},

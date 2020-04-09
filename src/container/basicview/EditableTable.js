@@ -19,6 +19,7 @@ export default class EditableTable extends React.Component{
     this.editTable = this.editTable.bind(this);
     this.jsonParse = this.jsonParse.bind(this);
     this.reverseAsTwoByte = this.reverseAsTwoByte.bind(this);
+    this.PrefixInteger = this.PrefixInteger.bind(this);
   };
   componentDidMount(){
     this.fetchJSON()
@@ -168,12 +169,17 @@ export default class EditableTable extends React.Component{
   jsonParse(res) {
     return res.json().then(jsonResult => ({ res, jsonResult }));
   }
+
   reverseAsTwoByte(data){
     var tmp = ""
     for(let a=0; a<data.length/2;a++){
       tmp = tmp.concat(data[data.length-2*a-2]+data[data.length-2*a-1])
     }
     return tmp
+  }
+ 
+  PrefixInteger(num, length) {
+     return (Array(length).join('0') + num).slice(-length);
   }
   //click button and fetch data back from 127.0.0.1:8888
   handleClick(){
@@ -259,12 +265,21 @@ export default class EditableTable extends React.Component{
           var btnName =  event.target.name
           let getAllValueInput = document.querySelectorAll("a[id^='value_input']")
           let getAllValueCalc = document.querySelectorAll("th[id^='value_calc']")
+          let getAllLength = document.querySelectorAll("th[id^='lengthBootConfigEncoder']")
           let pattern = /[A-Fa-f]/
 
           for(let idx=0; idx<getAllValueInput.length;idx++){
             let inputString = getAllValueInput[idx].innerHTML;
             if(pattern.test(inputString)){
               getAllValueCalc[idx].innerHTML = this.reverseAsTwoByte(inputString)
+            }else{
+              //把字符串转为数字，然后再转为16进制字符串
+              let inputHex = parseInt(inputString).toString(16)
+
+              let length = getAllLength[idx].innerHTML
+              let fullHex = this.PrefixInteger(inputHex, 2*length)
+              getAllValueCalc[idx].innerHTML = this.reverseAsTwoByte(fullHex)
+
             }
           }
           
