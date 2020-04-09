@@ -18,6 +18,7 @@ export default class EditableTable extends React.Component{
     this.renderTable = this.renderTable.bind(this);
     this.editTable = this.editTable.bind(this);
     this.jsonParse = this.jsonParse.bind(this);
+    this.reverseAsTwoByte = this.reverseAsTwoByte.bind(this);
   };
   componentDidMount(){
     this.fetchJSON()
@@ -167,7 +168,13 @@ export default class EditableTable extends React.Component{
   jsonParse(res) {
     return res.json().then(jsonResult => ({ res, jsonResult }));
   }
-
+  reverseAsTwoByte(data){
+    var tmp = ""
+    for(let a=0; a<data.length/2;a++){
+      tmp = tmp.concat(data[data.length-2*a-2]+data[data.length-2*a-1])
+    }
+    return tmp
+  }
   //click button and fetch data back from 127.0.0.1:8888
   handleClick(){
     var fileName, address, size
@@ -225,7 +232,6 @@ export default class EditableTable extends React.Component{
           catch(error){
             console.log(error)
           }          
-          console.log(btnID,fileName,address,size )
           break;
 
         case "Burn":
@@ -247,25 +253,29 @@ export default class EditableTable extends React.Component{
           catch(error){
             console.log(error)
           }          
-          console.log(btnID,fileName,address,size )
           break;
 
         case "TOBOOT_CFG_APP":
           var btnName =  event.target.name
-          var getAllA = document.querySelectorAll("a")
-          for(var idx in getAllA){
-            get
+          let getAllValueInput = document.querySelectorAll("a[id^='value_input']")
+          let getAllValueCalc = document.querySelectorAll("th[id^='value_calc']")
+          let pattern = /[A-Fa-f]/
+
+          for(let idx=0; idx<getAllValueInput.length;idx++){
+            let inputString = getAllValueInput[idx].innerHTML;
+            if(pattern.test(inputString)){
+              getAllValueCalc[idx].innerHTML = this.reverseAsTwoByte(inputString)
+            }
           }
-          console.log(btnID,fileName,address,size )
+          
           break;
         case "TOBOOT_CFG_FAC":
           var btnName =  event.target.name
-          var getAllA = document.querySelectorAll("a")
+          var getAllValueInput = document.querySelectorAll("a[id^='value_input']")
           
-          console.log(btnID,fileName,address,size )
           break;
         case "ReadandSave":
-          let btnName =  event.target.name
+          var btnName =  event.target.name
           let getAllW = document.querySelectorAll("input[id^='W_editReadFlash']:checked")
           let getAllT = document.querySelectorAll("input[id^='T_editReadFlash']:checked")
           let getAllF = document.querySelectorAll("a[id^='file/string']")
