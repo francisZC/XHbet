@@ -10,7 +10,7 @@ export default class EditableTable extends React.Component{
   constructor(props) {
     super(props)
     this.state = {
-      //empty column is for button
+      //第二次渲染之后，会给boardstatus更新数据
       boardstatus: ''
       
     };
@@ -55,7 +55,7 @@ export default class EditableTable extends React.Component{
     
     let tableList = this.renderTable()
     return(
-      <div style={{marginRight:"20px"}}>
+      <div>
         {tableList}
       </div>
     )
@@ -90,7 +90,7 @@ export default class EditableTable extends React.Component{
                           return <tr key={id}>
                               {rowValue.map((val,key)=>{
                                 let chooseOne = rowKeys[key].indexOf('edit')
-                                return<th id={rowKeys[key]+tableName+id} style={{fontWeight:"normal", textAlign:"center", textOverflow:"ellipsis",overflow:"hidden", whiteSpace:"nowrap"}} key={key} data-editable="true">
+                                return<th id={rowKeys[key]+tableName+id} style={{wordWrap:"break-all",  fontWeight:"normal", textAlign:"center", textOverflow:"ellipsis",overflow:"hidden"}} key={key} data-editable="true">
                                    {chooseOne==-1? val:(<a href='#' id={rowKeys[key]+tableName+id} style={{textOverflow:"ellipsis"}} data-pk='1'data-type="text">{val}</a>)}
                                 </th>
                           })}
@@ -170,6 +170,7 @@ export default class EditableTable extends React.Component{
     return res.json().then(jsonResult => ({ res, jsonResult }));
   }
 
+  //每两个字符前后调换
   reverseAsTwoByte(data){
     var tmp = ""
     for(let a=0; a<data.length/2;a++){
@@ -178,9 +179,11 @@ export default class EditableTable extends React.Component{
     return tmp
   }
  
+  //输出长度为length的字符串，以num结尾，长度不足在num前面补零
   PrefixInteger(num, length) {
      return (Array(length).join('0') + num).slice(-length);
   }
+
   //click button and fetch data back from 127.0.0.1:8888
   handleClick(){
     var fileName, address, size
@@ -263,15 +266,18 @@ export default class EditableTable extends React.Component{
 
         case "TOBOOT_CFG_APP":
           var btnName =  event.target.name
-          let getAllValueInput = document.querySelectorAll("a[id^='value_input']")
-          let getAllValueCalc = document.querySelectorAll("th[id^='value_calc']")
-          let getAllLength = document.querySelectorAll("th[id^='lengthBootConfigEncoder']")
-          let pattern = /[A-Fa-f]/
-
+          let getAllValueInput = document.querySelectorAll("a[id^='value_input']");
+          let getAllValueCalc = document.querySelectorAll("th[id^='value_calc']");
+          let getAllLength = document.querySelectorAll("th[id^='lengthBootConfigEncoder']");
+          let FACConfig = document.querySelector("a[id='file/string_editBurn1']");
+          console.log(FACConfig)
+          let pattern = /[A-Fa-f]/;
+          let FACString = "";
           for(let idx=0; idx<getAllValueInput.length;idx++){
             let inputString = getAllValueInput[idx].innerHTML;
             if(pattern.test(inputString)){
-              getAllValueCalc[idx].innerHTML = this.reverseAsTwoByte(inputString)
+              getAllValueCalc[idx].innerHTML = this.reverseAsTwoByte(inputString);
+              FACString +=  getAllValueCalc[idx].innerHTML;
             }else{
               //把字符串转为数字，然后再转为16进制字符串
               let inputHex = parseInt(inputString).toString(16)
@@ -279,10 +285,10 @@ export default class EditableTable extends React.Component{
               let length = getAllLength[idx].innerHTML
               let fullHex = this.PrefixInteger(inputHex, 2*length)
               getAllValueCalc[idx].innerHTML = this.reverseAsTwoByte(fullHex)
-
+              FACString += getAllValueCalc[idx].innerHTML;
             }
           }
-          
+          FACConfig.innerHTML = FACString;
           break;
         case "TOBOOT_CFG_FAC":
           var btnName =  event.target.name
