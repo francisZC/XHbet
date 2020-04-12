@@ -20,6 +20,7 @@ export default class EditableTable extends React.Component{
     this.jsonParse = this.jsonParse.bind(this);
     this.reverseAsTwoByte = this.reverseAsTwoByte.bind(this);
     this.PrefixInteger = this.PrefixInteger.bind(this);
+    this.updateProgress = this.updateProgress.bind(this);
   };
   componentDidMount(){
     this.fetchJSON()
@@ -62,7 +63,6 @@ export default class EditableTable extends React.Component{
   }
 
    renderTable() {
-     console.log('this is render table')
     var tableList = [];
       for(var tableName in this.state.boardstatus ){
         tableList.push(
@@ -90,7 +90,7 @@ export default class EditableTable extends React.Component{
                           return <tr key={id}>
                               {rowValue.map((val,key)=>{
                                 let chooseOne = rowKeys[key].indexOf('edit')
-                                return<th id={rowKeys[key]+tableName+id} style={{wordWrap:"break-all",  fontWeight:"normal", textAlign:"center", textOverflow:"ellipsis",overflow:"hidden"}} key={key} data-editable="true">
+                                return<th id={rowKeys[key]+tableName+id} style={{wordBreak:"break-all",  fontWeight:"normal", textAlign:"center", textOverflow:"ellipsis",overflow:"hidden"}} key={key} data-editable="true">
                                    {chooseOne==-1? val:(<a href='#' id={rowKeys[key]+tableName+id} style={{textOverflow:"ellipsis"}} data-pk='1'data-type="text">{val}</a>)}
                                 </th>
                           })}
@@ -116,12 +116,12 @@ export default class EditableTable extends React.Component{
      
   }
 
-  editTable () {
+  editTable () { 
     //W and T table have select and options
     let $inputW = $("a[id^='W']")
     let $inputT = $("a[id^='T']")
     let insertRadioW = "", insertRadioT = "";
-    console.log('--------input T-----------',$inputT)
+
     for(let i=0; i<$inputW.length;i++){
       let htmlW = $inputW.get(i).innerHTML
       let textW = $inputW.get(i).innerText
@@ -149,14 +149,17 @@ export default class EditableTable extends React.Component{
       
       $inputW[i].outerHTML = insertRadioW
       $inputT[i].outerHTML = insertRadioT
-   
+    
      
     }
 
     // $('input[type=checkbox]').onoff();
     
-
-
+    let progressContent = document.querySelectorAll("th[id^='progress']");
+    for(let i=0; i<progressContent.length;i++){
+      progressContent[i].innerHTML = "<div class='progress' style='height:20px;'><div class='progress-bar' style='width:1%;' id='progress-bar-"+progressContent[i].id+"'>0%</div></div>"
+    }
+    
 
     $("a").editable(
         {
@@ -184,14 +187,31 @@ export default class EditableTable extends React.Component{
      return (Array(length).join('0') + num).slice(-length);
   }
 
+  updateProgress(id, data){
+    let progressId = 'progress-bar-'+id;
+    let progressVal = data+"%";
+    console.log($("#"+progressId))
+    $("#"+progressId).css("width", progressVal)
+    // let progress = document.getElementById('progress-bar-'+id);
+
+    // progress.style["width"] = data+"%";
+    // console.log(progress.style["width"])
+  }
   //click button and fetch data back from 127.0.0.1:8888
   handleClick(){
     var fileName, address, size
       let btnID = event.target.id;
       let temp = jsondeepCopy(this.state.boardstatus);
+
       switch(btnID){
         case "Connect":
         case "EraseFullChip":
+          temp['Connect']['rowdata'][0]['progress'] = 20;
+          temp['Connect']['rowdata'][0]['status'] = 'Connecting';
+          this.setState({
+            boardstatus:temp
+          })
+          this.updateProgress('progressConnect0', temp['Connect']['rowdata'][0]['progress']);
           let postdata ='';
           let fetRes = fetch(urlpost+btnID,
             {
@@ -223,6 +243,11 @@ export default class EditableTable extends React.Component{
         case "BackupFullChip":
           var btnName =  event.target.name
           var getAllA = document.querySelectorAll("a")
+          let postBackupRestore = {
+            fileName:'',
+            baseAddress:'',
+            sizeByte:''
+          }
           try{
             for(var idx in getAllA){
               if(getAllA[idx].id == undefined)
@@ -241,6 +266,30 @@ export default class EditableTable extends React.Component{
           catch(error){
             console.log(error)
           }          
+          postBackupRestore.fileName = fileName;
+          postBackupRestore.baseAddress = address;
+          postBackupRestore.sizeByte =  size;
+          let backRestoreRet = fetch(urlpost+btnID,
+            {
+                method:'POST',
+                headers:{
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    "Access-Control-Allow-Origin":"*",
+                    "Access-Control-Allow-Headers":"Content-Type,Access-Token"
+                },
+                body: JSON.stringify(postBackupRestore)
+            })
+            backRestoreRet.then(res=>res.json())
+              .then((data)=>{
+         
+               
+              })
+              
+              .catch( (error) => {
+                  console.log('request error', error);
+                  return { error };
+              });
           break;
 
         case "Burn":
@@ -250,7 +299,6 @@ export default class EditableTable extends React.Component{
             for(var idx in getAllA){
               if(getAllA[idx].id == undefined)
                 break;
-              console.log(btnName)
               if(getAllA[idx].id.indexOf(btnName)!=-1 && getAllA[idx].id.indexOf('file/string')!=-1){
                 fileName = getAllA[idx].innerHTML
               }
@@ -270,7 +318,6 @@ export default class EditableTable extends React.Component{
           let getAllValueCalc = document.querySelectorAll("th[id^='value_calc']");
           let getAllLength = document.querySelectorAll("th[id^='lengthBootConfigEncoder']");
           let FACConfig = document.querySelector("a[id='file/string_editBurn1']");
-          console.log(FACConfig)
           let pattern = /[A-Fa-f]/;
           let FACString = "";
           for(let idx=0; idx<getAllValueInput.length;idx++){
@@ -345,10 +392,7 @@ export default class EditableTable extends React.Component{
             }
             
           }
-          
           break;
-        
-          
       }
     
   }

@@ -225,31 +225,31 @@
       "columns":["index","W","T","type","file/string","address","size","progress","status"],
       "rowdata":[
         {
-          "index":0,"W_edit":0,"T_edit":"S","type":"STARTJUMP", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+          "index":0,"W_edit":0,"T_edit":"S","type":"STARTJUMP", "file/string_edit":"startjump.bin","address_edit":"0x8000000","size_edit":16384,"progress":100, "status":"Verify OK"
         },        
         {
-          "index":1,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_FAC", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":192,"progress":100, "status":"Verify OK"
+          "index":1,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_FAC", "file/string_edit":"startjump.bin","address_edit":"0x8000000","size_edit":192,"progress":100, "status":"Verify OK"
         },        
         {
-          "index":2,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_APP", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":192,"progress":100, "status":"Verify OK"
+          "index":2,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_APP", "file/string_edit":"startjump.bin","address_edit":"0x8000000","size_edit":192,"progress":100, "status":"Verify OK"
         },        
         {
-          "index":3,"W_edit":0,"T_edit":"S","type":"USER_DATA_1", "file/string_edit":"user_data_1_bak.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+          "index":3,"W_edit":0,"T_edit":"S","type":"USER_DATA_1", "file/string_edit":"user_data_1_bak.bin","address_edit":"0x8000000","size_edit":16384,"progress":100, "status":"Verify OK"
         },       
         {
-          "index":4,"W_edit":1,"T_edit":"F","type":"USER_DATA_2", "file/string_edit":"user_data_2_bak.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+          "index":4,"W_edit":1,"T_edit":"F","type":"USER_DATA_2", "file/string_edit":"user_data_2_bak.bin","address_edit":"0x8000000","size_edit":16384,"progress":100, "status":"Verify OK"
         },        
         {
-          "index":5,"W_edit":0,"T_edit":"F","type":"IAP", "file/string_edit":"iap_bak.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+          "index":5,"W_edit":0,"T_edit":"F","type":"IAP", "file/string_edit":"iap_bak.bin","address_edit":"0x8000000","size_edit":16384,"progress":100, "status":"Verify OK"
         },        
         {
-          "index":6,"W_edit":0,"T_edit":"S","type":"FACTORY_LOAD", "file/string_edit":"facroty_load_bak.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+          "index":6,"W_edit":0,"T_edit":"S","type":"FACTORY_LOAD", "file/string_edit":"facroty_load_bak.bin","address_edit":"0x8000000","size_edit":16384,"progress":100, "status":"Verify OK"
         },        
         {
-          "index":7,"W_edit":1,"T_edit":"F","type":"APP1_LOAD", "file/string_edit":"app1_load_bak.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+          "index":7,"W_edit":1,"T_edit":"F","type":"APP1_LOAD", "file/string_edit":"app1_load_bak.bin","address_edit":"0x8000000","size_edit":16384,"progress":100, "status":"Verify OK"
         },        
         {
-          "index":8,"W_edit":0,"T_edit":"F","type":"APP2_LOAD", "file/string_edit":"app2_load_bak.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+          "index":8,"W_edit":0,"T_edit":"F","type":"APP2_LOAD", "file/string_edit":"app2_load_bak.bin","address_edit":"0x8000000","size_edit":16384,"progress":100, "status":"Verify OK"
         }        
       ],
       "button":[{"abbr":"readsave","name":"Read and Save"}]        
