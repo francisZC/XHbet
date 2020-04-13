@@ -30,7 +30,8 @@ var jsonInputData = {
 }
 
  async function processCurls(reqData){
-    console.log('-----request data ins',JSON.stringify(reqData))
+    //  let data1 = JSON.stringify(reqData)
+     console.log('-------req data',reqData)
         try{
             let result = await fetch(requestURL,
                 {
@@ -39,17 +40,10 @@ var jsonInputData = {
                         'Content-Type':'application/json', 
                         'Connection': 'close'
                     },
-                    body: JSON.stringify(reqData)
+                    body: reqData
                 });   
                 let jsonoutput = await result.json()
-                return jsonoutput;
-                // console.log(jsonoutput)
-            // result.then((res)=>{
-            //     return res.json()
-            // })
-            // .then((data)=>{console.log('***** data',data)
-            // retRes= data})
-            // return retRes    
+                return jsonoutput;   
         }catch(e) {
             console.log(e);
         }

@@ -71,32 +71,30 @@ http.createServer(async function(request, response) {
     switch(command){
         case "Connect":
         case "EraseFullChip":
-            let jsonInputData = {
-                "restTag": "suua", 
-                "actionId": 30001, 
-                "parFlag": 1, 
-                "parContent": {
-                    "cmd": "start_comm", 
-                    "para": {
-                        "timeOutCnt": 30,
-                    }
-                }
-            }
+            
             console.log("Client require :"+pathname);
             let n = 0;
             //add "Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"Content-Type,Access-Token"s
             response.writeHead(200, {"Content-Type": "application/json", "Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"Content-Type,Access-Token"});
             for(data in curlJSON[command]["steps"]){
-
+                let jsonInputData = {
+                    "restTag": "suua", 
+                    "actionId": 30001, 
+                    "parFlag": 1, 
+                    "parContent": {
+                        "cmd": "start_comm", 
+                        "para": {
+                            "timeOutCnt": 30,
+                        }
+                    }
+                }
                 jsonInputData["parContent"] = curlJSON[command]["steps"][data]['parContent']
-                
+                jsonInputData = JSON.stringify(jsonInputData);
                 var result = await curlData.processCurls(jsonInputData);
-                // console.log('return result*******', typeof(result))
-                // let jsonoutput = result.json;//await jsonParse(result);
-
+                // console.log("-------result from curl-----", JSON.stringify(result))
                 resHex = JSON.stringify(result["parContent"]["result"]);
-                if(resHex>=0){
-                    
+                if(resHex >= 0){
+                    n++;
                     resultRet["progress"] = processVal[n];
                     resultRet["status"] = "Connecting";
                     if(n>10){
@@ -105,21 +103,20 @@ http.createServer(async function(request, response) {
                     
                 }
                 else{
-                    n++;
+                    
                     resultRet["progress"] = processVal[n];
                     resultRet["status"] = "Time out";
-    
+                    
                 }
-                response.write(JSON.stringify(resultRet));
-                response.end(',');
                 
             }
-            
+            response.write(JSON.stringify(resultRet));
+            response.end();
             break;
         case "ReadandSave":
             
             request.on('data', async function (chunk) {
-                let jsonInputData = {
+                let dataReadSave = {
                     "restTag": "suua", 
                     "actionId": 30001, 
                     "parFlag": 1, 
@@ -144,21 +141,25 @@ http.createServer(async function(request, response) {
                  */
                 let readFlashOffset = 0;
                 let nextLenToRead = STM32_MAX_BYTES_TO_READ;
-                let paraField = {'timeOutCnt':30, 'addr':0, 'nbrRead':1};
-                let address = baseAddress + readFlashOffset;
+                let address = baseAddress;
 
                 while(readFlashOffset < sizeInByte){
+                    let paraField = {'timeOutCnt':30, 'addr':800, 'nbrRead':1};
                     paraField["addr"] = '0x'+ address.toString(16);
-                    paraField["nbrRead"] = nextLenToRead;
-                    jsonInputData["parContent"]["para"] = paraField;
+                    address = baseAddress + readFlashOffset;
+                    paraField["nbrRead"] = 1;
+                    dataReadSave["parContent"]["para"] = paraField;
+                    // dataReadSave = JSON.stringify(dataReadSave).replace('800',address);
 
-                    let result = await curlData.processCurls(jsonInputData);
+                    console.log('----dataReadSave',dataReadSave)
+                    let result = await curlData.processCurls(JSON.stringify(dataReadSave));
+
                     resHex = JSON.stringify(result["parContent"]["result"]);
                     console.log('----------------save-return----',result,resHex)
 
                     parContentResult =  result['parContent']['result']
                     parContentHex = result['parContent']['hex']
-                    // readFlashOffset = readFlashOffset + result.length/2;
+                    readFlashOffset = readFlashOffset + result.length/2;
                     if (readFlashOffset + STM32_MAX_BYTES_TO_READ > sizeInByte){
                         nextLenToRead = sizeInByte - readFlashOffset
                     }else{

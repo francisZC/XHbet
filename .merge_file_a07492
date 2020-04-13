@@ -1,0 +1,377 @@
+{
+    "Connect":{
+        "title":"Step1 Connect to the board",
+        "columns":["progess","status"],
+        "rowdata":[
+          {
+            "progress":0,
+            "status":"NOK"
+          }
+        ],
+        "button":[{"abbr":"Connect",
+                  "name":"Connect"}]
+        
+    },
+    "Erase":{
+        "title":"Step2 Before burn anything to FLASH, Erase Full Chip",
+        "columns":["progress","status"],
+        "rowdata":[
+          {
+          
+            "progress":0,
+            "status":"Erased NOK"
+            
+          }
+        ],
+        "button":[{"abbr":"Erase",
+          "name":"Erase Full Chip"}]
+        
+    },
+    "Backup":{
+         "columns":["method","filename","address","size","progress","status"],
+       "rowdata":[
+             { 
+               "method":"Backup",   
+              "Backup_filename_edit":"stm32f207_backup.bin",
+              "Backup_address_edit":"0x80000000",
+              "Backup_size_edit":2048,
+              "progress":0,
+              "status":"Saved OK"
+            },
+            {
+              "method":"Restore",
+              "Restore_filename_edit":"test.bin",
+              "Restore_address_edit":"0x80000000",
+              "Restore_size_edit":2048,
+              "progress":0,
+              "status":"Saved OK"
+            }
+        ],
+        "button":[{"abbr":"Backup","name":"Backup Full Chip"},
+                  {"abbr":"Restore","name":"Restore Full Chip"}]
+          
+    },
+    "Burn":{
+      "title":"Step4 Burn Flash via Section(W=1, Write, W=0,skip, T=F, from file, T=S, from Hex String)",
+      "columns":["index","W","T","type","file/string","address","size","progress","status"],
+      "rowdata":[
+        {
+          "index":0,"W_edit":0,"T_edit":"F","type":"STARTJUMP", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":1,"W_edit":1,"T_edit":"S","type":"BOOT_CFG_FAC", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":192,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":2,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_APP", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":192,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":3,"W_edit":0,"T_edit":"F","type":"USER_DATA_1", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+        },       
+        {
+          "index":4,"W_edit":1,"T_edit":"F","type":"USER_DATA_2", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":5,"W_edit":0,"T_edit":"F","type":"IAP", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":7516,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":6,"W_edit":0,"T_edit":"F","type":"FACTORY_LOAD", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":7,"W_edit":1,"T_edit":"S","type":"APP1_LOAD", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":8,"W_edit":0,"T_edit":"F","type":"APP2_LOAD", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+        }
+      ],
+      "button":[{"abbr":"Burn",
+      "name":"Burn"}]
+    },
+    "BootConfigEncoder":{
+      "title":"Step4.1 BOOT CONFIG ENCODER (PLEASE FILL ONLY GREEN CELL)",
+      "columns":["offset","length","type","name","value_input","value_calc","data_type","Fill","Temp","Valid"],
+      "rowdata":[
+          {
+            "offset":0, "length":4,"type":"UINT32", "name":"initBurnFlag","value_input_edit":"55AA55AA", "value_calc":"", "datatype":"hex", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":4, "length":20,"type":"char[20]", "name":"equLable","value_input_edit":"65717569706D656E745F6E616D655F5F78685F5F", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":24, "length":20,"type":"char[20]", "name":"custMnLable","value_input_edit":"65717569706D656E745F6E616D655F5F78685F5F", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":44, "length":2,"type":"UINT16", "name":"hwType","value_input_edit":"1800", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":46, "length":2,"type":"UINT16", "name":"hwPemId","value_input_edit":"3", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":48, "length":1,"type":"UINT8", "name":"swUpgradeFlag","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":49, "length":1,"type":"UINT8", "name":"swUpgPollId","value_input_edit":"2", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":50, "length":2,"type":"UINT16", "name":"rsv1","value_input_edit":"1024", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":52, "length":4,"type":"UINT32", "name":"dlTotalLen","value_input_edit":"16384", "value_calc":"", "datatype":"hex", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":56, "length":4,"type":"UINT32", "name":"dlSegNbrMax","value_input_edit":"256", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":60, "length":4,"type":"UINT32", "name":"dlSegNbrIndex","value_input_edit":"0", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":64, "length":4,"type":"UINT32", "name":"dlAppCksum","value_input_edit":"0", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":68, "length":4,"type":"UINT32", "name":"dlAppSegLen","value_input_edit":"0", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":72, "length":4,"type":"UINT32", "name":"dlAppSwRelId","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":76, "length":4,"type":"UINT32", "name":"dlAppSwVerId","value_input_edit":"2", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":80, "length":4,"type":"UINT32", "name":"facLoadLen","value_input_edit":"16384", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":84, "length":4,"type":"UINT32", "name":"facLoadRelId","value_input_edit":"2", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":88, "length":4,"type":"UINT32", "name":"facLoadVerId","value_input_edit":"2", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":92, "length":4,"type":"UINT32", "name":"facLoadCheckSum","value_input_edit":"1560", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":96, "length":4,"type":"UINT32", "name":"facLoadValid","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":100, "length":4,"type":"UINT32", "name":"iapLoadLen","value_input_edit":"7516", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":104, "length":4,"type":"UINT32", "name":"iapLoadRelId","value_input_edit":"2", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":108, "length":4,"type":"UINT32", "name":"iapLoadVerId","value_input_edit":"3", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":112, "length":4,"type":"UINT32", "name":"iapLoadCheckSum","value_input_edit":"234", "value_calc":"", "datatype":"hex", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":116, "length":4,"type":"UINT32", "name":"iapLoadValid","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":120, "length":4,"type":"UINT32", "name":"app1LoadLen","value_input_edit":"16384", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":124, "length":4,"type":"UINT32", "name":"app1LoadRelId","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":128, "length":4,"type":"UINT32", "name":"app1LoadVerId","value_input_edit":"2", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":132, "length":4,"type":"UINT32", "name":"app1LoadCheckSum","value_input_edit":"34565", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":136, "length":4,"type":"UINT32", "name":"app1LoadValid","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":140, "length":4,"type":"UINT32", "name":"app2LoadLen","value_input_edit":"16384", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":144, "length":4,"type":"UINT32", "name":"app2LoadRelId","value_input_edit":"3", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":148, "length":4,"type":"UINT32", "name":"app2LoadVerId","value_input_edit":"4", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":152, "length":4,"type":"UINT32", "name":"app2LoadCheckSum","value_input_edit":"2345", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":156, "length":4,"type":"UINT32", "name":"app2LoadValid","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":160, "length":16,"type":"UINT8[16]", "name":"cipherKey","value_input_edit":"000102030405060708090A0B0C0D0E0F", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          },
+          {
+            "offset":176, "length":16,"type":"UINT8[16]", "name":"rsv","value_input_edit":"000102030405060708090A0B0C0D0E0F", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+          }
+      ],
+      "button":[{"abbr":"toFAC","name":"TO BOOT_CFG_FAC"},
+                {"abbr":"toAPP","name":"TO BOOT_CFG_APP"}]
+     
+    },
+    "CheckFileLength":{
+      "title":"Check File Length",
+      "columns":["IAP","FACTORY_LOAD","APP1_LOAD","APP2_LOAD","status"],
+      "rowdata":[
+        {
+          "IAP_edit":"iap.bin",
+          "FACTORY_LOAD_edit":"facotry.bin",
+          "APP1_LOAD_edit":"app1_load.bin",
+          "APP2_LOAD_edit":"app2_load.bin",
+          "status":"Check OK"
+        }              
+      ],
+      "button":[{"abbr":"checkfilelen","name":"Check File Length"}]            
+    },
+    "ReadFlash":{
+      "title":"Step5 Read Flash via Section",
+      "columns":["index","W","T","type","file/string","address","size","progress","status"],
+      "rowdata":[
+        {
+          "index":0,"W_edit":0,"T_edit":"S","type":"STARTJUMP", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":1,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_FAC", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":192,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":2,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_APP", "file/string_edit":"startjump.bin","address_edit":"0x80000000","size_edit":192,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":3,"W_edit":0,"T_edit":"S","type":"USER_DATA_1", "file/string_edit":"user_data_1_bak.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+        },       
+        {
+          "index":4,"W_edit":1,"T_edit":"F","type":"USER_DATA_2", "file/string_edit":"user_data_2_bak.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":5,"W_edit":0,"T_edit":"F","type":"IAP", "file/string_edit":"iap_bak.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":6,"W_edit":0,"T_edit":"S","type":"FACTORY_LOAD", "file/string_edit":"facroty_load_bak.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":7,"W_edit":1,"T_edit":"F","type":"APP1_LOAD", "file/string_edit":"app1_load_bak.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+        },        
+        {
+          "index":8,"W_edit":0,"T_edit":"F","type":"APP2_LOAD", "file/string_edit":"app2_load_bak.bin","address_edit":"0x80000000","size_edit":16384,"progress":100, "status":"Verify OK"
+        }        
+      ],
+      "button":[{"abbr":"readsave","name":"Read and Save"}]        
+    },
+    "BootConfigDecoder":{
+      "title":"Step5.1 BOOT CONFIG DECODER",
+      "columns":["offset","length","type","name","value_output","value_calc","data_type","Fill","Temp","Valid"],
+      "rowdata":[
+        {
+          "offset":0, "length":4,"type":"UINT32", "name":"initBurnFlag","value_output_edit":"55AA55AA", "value_calc":"", "datatype":"hex", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":4, "length":20,"type":"char[20]", "name":"equLable","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":24, "length":20,"type":"char[20]", "name":"custMnLable","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":44, "length":2,"type":"UINT16", "name":"hwType","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":46, "length":2,"type":"UINT16", "name":"hwPemId","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":48, "length":1,"type":"UINT8", "name":"swUpgradeFlag","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":49, "length":1,"type":"UINT8", "name":"swUpgPollId","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":50, "length":2,"type":"UINT16", "name":"rsv1","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":52, "length":4,"type":"UINT32", "name":"dlTotalLen","value_output_edit":"55AA55AA", "value_calc":"", "datatype":"hex", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":56, "length":4,"type":"UINT32", "name":"dlSegNbrMax","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":60, "length":4,"type":"UINT32", "name":"dlSegNbrIndex","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":64, "length":4,"type":"UINT32", "name":"dlAppCksum","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":68, "length":4,"type":"UINT32", "name":"dlAppSegLen","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":72, "length":4,"type":"UINT32", "name":"dlAppSwRelId","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":76, "length":4,"type":"UINT32", "name":"dlAppSwVerId","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":80, "length":4,"type":"UINT32", "name":"facLoadLen","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":84, "length":4,"type":"UINT32", "name":"facLoadRelId","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":88, "length":4,"type":"UINT32", "name":"facLoadVerId","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":92, "length":4,"type":"UINT32", "name":"facLoadCheckSum","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":96, "length":4,"type":"UINT32", "name":"facLoadValid","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":100, "length":4,"type":"UINT32", "name":"iapLoadLen","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":104, "length":4,"type":"UINT32", "name":"iapLoadRelId","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":108, "length":4,"type":"UINT32", "name":"iapLoadVerId","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":112, "length":4,"type":"UINT32", "name":"iapLoadCheckSum","value_output_edit":"55AA55AA", "value_calc":"", "datatype":"hex", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":116, "length":4,"type":"UINT32", "name":"iapLoadValid","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":120, "length":4,"type":"UINT32", "name":"app1LoadLen","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":124, "length":4,"type":"UINT32", "name":"app1LoadRelId","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":128, "length":4,"type":"UINT32", "name":"app1LoadVerId","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":132, "length":4,"type":"UINT32", "name":"app1LoadCheckSum","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":136, "length":4,"type":"UINT32", "name":"app1LoadValid","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":140, "length":4,"type":"UINT32", "name":"app2LoadLen","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":144, "length":4,"type":"UINT32", "name":"app2LoadRelId","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":148, "length":4,"type":"UINT32", "name":"app2LoadVerId","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":152, "length":4,"type":"UINT32", "name":"app2LoadCheckSum","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":156, "length":4,"type":"UINT32", "name":"app2LoadValid","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":160, "length":16,"type":"UINT8[16]", "name":"cipherKey","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        },
+        {
+          "offset":176, "length":16,"type":"UINT8[16]", "name":"rsv","value_output_edit":"1234567890", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+        }
+          
+      ],
+      "button":[{"abbr":"fromFAC","name":"FROM BOOT_CFG_FAC"},
+      {"abbr":"fromAPP","name":"FROM BOOT_CFG_APP"}]
+    }
+}
