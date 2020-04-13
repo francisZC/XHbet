@@ -3,6 +3,8 @@ import "./Editable.css"
 import Editable from 'react-x-editable';  
 import { jsondeepCopy } from '../../util/util.js';
 import { instanceOf } from "prop-types";
+import ReactDOM from "react-dom";
+import { Progress } from "antd";
 // import {OnOff} from "jquery.onoff"
 // import Switch from "react-switch"
 var urlpost = "http://localhost:8888/";
@@ -11,7 +13,8 @@ export default class EditableTable extends React.Component{
     super(props)
     this.state = {
       //第二次渲染之后，会给boardstatus更新数据
-      boardstatus: ''
+      boardstatus: '',
+      progressWidth: '0%'
       
     };
     this.fetchJSON = this.fetchJSON.bind(this);
@@ -20,7 +23,7 @@ export default class EditableTable extends React.Component{
     this.jsonParse = this.jsonParse.bind(this);
     this.reverseAsTwoByte = this.reverseAsTwoByte.bind(this);
     this.PrefixInteger = this.PrefixInteger.bind(this);
-    this.updateProgress = this.updateProgress.bind(this);
+    // this.updateProgress = this.updateProgress.bind(this);
   };
   componentDidMount(){
     this.fetchJSON()
@@ -89,11 +92,25 @@ export default class EditableTable extends React.Component{
                           rowKeys=Object.keys(data)
                           return <tr key={id}>
                               {rowValue.map((val,key)=>{
-                                let chooseOne = rowKeys[key].indexOf('edit')
-                                return<th id={rowKeys[key]+tableName+id} style={{wordBreak:"break-all",  fontWeight:"normal", textAlign:"center", textOverflow:"ellipsis",overflow:"hidden"}} key={key} data-editable="true">
-                                   {chooseOne==-1? val:(<a href='#' id={rowKeys[key]+tableName+id} style={{textOverflow:"ellipsis"}} data-pk='1'data-type="text">{val}</a>)}
-                                </th>
-                          })}
+                                let ifEdit = rowKeys[key].indexOf('edit')
+                                let ifProgress = rowKeys[key].indexOf('progress')
+                                return<th id={rowKeys[key]+tableName+id} 
+                                      style={{wordBreak:"break-all",  fontWeight:"normal", textAlign:"center", textOverflow:"ellipsis",overflow:"hidden"}}
+                                      key={key} data-editable="true">
+                                        {/* 为progress加上进度条功能，进度条动态宽度和进度值由state里面的val获取 */}
+                                      {ifEdit==-1? (ifProgress==-1?val: <div className='progress' style={{height:'20px'}}>
+                                                                          <div className='progress-bar' style={{width:val+'%'}}
+                                                                            id={rowKeys[key]+tableName+id}>{val+'%'}
+                                                                          </div>
+                                                                        </div>)
+                                                                          :(<a href='#' id={rowKeys[key]+tableName+id} style={{textOverflow:"ellipsis"}} data-pk='1'data-type="text">
+                                                              {val}
+                                                            </a>
+                                                          )
+                                      }
+
+                                      </th>
+                                })}
                           </tr>
                       })
                     }
@@ -107,10 +124,12 @@ export default class EditableTable extends React.Component{
          
         )
     }
+
+    
     return tableList;
   }
 
-   componentDidUpdate(){
+  componentDidUpdate(){
   //after the second time render(fetch json from server and update this.state.boardstatus)
    this.editTable()
      
@@ -139,11 +158,11 @@ export default class EditableTable extends React.Component{
       }
       
       if(textT == "F"){
-        insertRadioT  = "<input type='radio' style='display: inline-block' checked='checked' name ='filetype"+2*i+1+"'  id='"+idT+"' />"+"F"+" "+
-      "<input type='radio' style='display: inline-block' name ='filetype"+2*i+1+"' id='"+idT+"' />"+"S"
+        insertRadioT  = "<input type='radio' style='display: inline-block' checked='checked' name ='filetype"+2*i+1+"'  id='"+idT+"' />"+"File"+" "+
+      "<input type='radio' style='display: inline-block' name ='filetype"+2*i+1+"' id='"+idT+"' />"+"String"
       }else if(textT == "S"){
-        insertRadioT  = "<input type='radio' style='display: inline-block'  name ='filetype"+2*i+1+"'  id='"+idT+"' />"+"F"+" "+
-      "<input type='radio' style='display: inline-block' checked='checked' name ='filetype"+2*i+1+"' id='"+idT+"' />"+"S"
+        insertRadioT  = "<input type='radio' style='display: inline-block'  name ='filetype"+2*i+1+"'  id='"+idT+"' />"+"File"+" "+
+      "<input type='radio' style='display: inline-block' checked='checked' name ='filetype"+2*i+1+"' id='"+idT+"' />"+"String"
       }
       
       
@@ -155,12 +174,6 @@ export default class EditableTable extends React.Component{
 
     // $('input[type=checkbox]').onoff();
     
-    let progressContent = document.querySelectorAll("th[id^='progress']");
-    for(let i=0; i<progressContent.length;i++){
-      progressContent[i].innerHTML = "<div class='progress' style='height:20px;'><div class='progress-bar' style='width:1%;' id='progress-bar-"+progressContent[i].id+"'>0%</div></div>"
-    }
-    
-
     $("a").editable(
         {
           validate:function (value) {
@@ -187,18 +200,7 @@ export default class EditableTable extends React.Component{
      return (Array(length).join('0') + num).slice(-length);
   }
 
-  updateProgress(id, data){
-    let progressId = 'progress-bar-'+id;
-    let progressVal = data+"%";
-    console.log($("#"+progressId))
-    $("#"+progressId).css("width", progressVal)
-    // let progress = document.getElementById('progress-bar-'+id);
-
-    // progress.style["width"] = data+"%";
-    // console.log(progress.style["width"])
-  }
-
-
+ 
   //click button and fetch data back from 127.0.0.1:8888
    async handleClick(){
     var fileName, address, size
@@ -208,12 +210,12 @@ export default class EditableTable extends React.Component{
       switch(btnID){
         case "Connect":
         case "EraseFullChip":
-          temp['Connect']['rowdata'][0]['progress'] = 20;
+          temp['Connect']['rowdata'][0]['progress'] = 10;
           temp['Connect']['rowdata'][0]['status'] = 'Connecting';
           this.setState({
-            boardstatus:temp
+            boardstatus:temp,
           })
-          this.updateProgress('progressConnect0', temp['Connect']['rowdata'][0]['progress']);
+          // this.updateProgress('progressConnect0', temp['Connect']['rowdata'][0]['progress']);
           let postdata ='';
           let fetRes = fetch(urlpost+btnID,
             {
@@ -295,12 +297,12 @@ export default class EditableTable extends React.Component{
 
         case "Burn":
           var btnName =  event.target.name
-          let getAllW = document.querySelectorAll("input[id^='W_editReadFlash']:checked")
-          let getAllT = document.querySelectorAll("input[id^='T_editReadFlash']:checked")
-          let getAllF = document.querySelectorAll("a[id*='file/stringBurn']")
-          let getAllA = document.querySelectorAll("a[id*='addressBurn']")
-          let getAllS = document.querySelectorAll("a[id*='sizeBurn']")
-          let postRead = {
+          let getAllBurnW = document.querySelectorAll("input[id^='W_editBurn']:checked")
+          let getAllBurnT = document.querySelectorAll("input[id^='T_editBurn']:checked")
+          let getAllBurnF = document.querySelectorAll("a[id*='file/stringBurn']")
+          let getAllBurnA = document.querySelectorAll("a[id*='addressBurn']")
+          let getAllBurnS = document.querySelectorAll("a[id*='sizeBurn']")
+          let postReadBurn = {
             fileName:'',
             baseAddress:'',
             sizeByte:''
@@ -312,7 +314,8 @@ export default class EditableTable extends React.Component{
           let getAllValueInput = document.querySelectorAll("a[id^='value_input']");
           let getAllValueCalc = document.querySelectorAll("th[id^='value_calc']");
           let getAllLength = document.querySelectorAll("th[id^='lengthBootConfigEncoder']");
-          let FACConfig = document.querySelector("a[id='file/string_editBurn1']");
+          let FACConfig = document.querySelector("a[id='edit_file/stringBurn1']");
+          let APPConfig = document.querySelector("a[id='edit_file/stringBurn2']");
           let pattern = /[A-Fa-f]/;
           let FACString = "";
           for(let idx=0; idx<getAllValueInput.length;idx++){
@@ -331,6 +334,7 @@ export default class EditableTable extends React.Component{
             }
           }
           FACConfig.innerHTML = FACString;
+          APPConfig.innerHTML = FACString;
           break;
         case "TOBOOT_CFG_FAC":
           var btnName =  event.target.name

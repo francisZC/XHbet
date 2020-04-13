@@ -56,31 +56,31 @@
       "columns":["index","W","T","type","file/string","address","size","progress","status"],
       "rowdata":[
         {
-          "index":0,"W_edit":0,"T_edit":"F","type":"STARTJUMP", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":100, "status":"Verify OK"
+          "index":0,"W_edit":0,"T_edit":"F","type":"STARTJUMP", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":1,"W_edit":1,"T_edit":"S","type":"BOOT_CFG_FAC", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":192,"progress":100, "status":"Verify OK"
+          "index":1,"W_edit":1,"T_edit":"S","type":"BOOT_CFG_FAC", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":192,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":2,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_APP", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":192,"progress":100, "status":"Verify OK"
+          "index":2,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_APP", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":192,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":3,"W_edit":0,"T_edit":"F","type":"USER_DATA_1", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":100, "status":"Verify OK"
+          "index":3,"W_edit":0,"T_edit":"F","type":"USER_DATA_1", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":0, "status":"Verify OK"
         },       
         {
-          "index":4,"W_edit":1,"T_edit":"F","type":"USER_DATA_2", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":100, "status":"Verify OK"
+          "index":4,"W_edit":1,"T_edit":"F","type":"USER_DATA_2", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":5,"W_edit":0,"T_edit":"F","type":"IAP", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":7516,"progress":100, "status":"Verify OK"
+          "index":5,"W_edit":0,"T_edit":"F","type":"IAP", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":7516,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":6,"W_edit":0,"T_edit":"F","type":"FACTORY_LOAD", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":100, "status":"Verify OK"
+          "index":6,"W_edit":0,"T_edit":"F","type":"FACTORY_LOAD", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":7,"W_edit":1,"T_edit":"S","type":"APP1_LOAD", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":100, "status":"Verify OK"
+          "index":7,"W_edit":1,"T_edit":"S","type":"APP1_LOAD", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":8,"W_edit":0,"T_edit":"F","type":"APP2_LOAD", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":100, "status":"Verify OK"
+          "index":8,"W_edit":0,"T_edit":"F","type":"APP2_LOAD", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":0, "status":"Verify OK"
         }
       ],
       "button":[{"abbr":"Burn",
@@ -151,7 +151,7 @@
             "offset":96, "length":4,"type":"UINT32", "name":"facLoadValid","value_input_edit":"1", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
-            "offset":100, "length":4,"type":"UINT32", "name":"iapLoadLen","value_input_edit":"7516", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
+            "offset":0, "length":4,"type":"UINT32", "name":"iapLoadLen","value_input_edit":"7516", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
           },
           {
             "offset":104, "length":4,"type":"UINT32", "name":"iapLoadRelId","value_input_edit":"2", "value_calc":"", "datatype":"char", "Fill":"0000", "Temp":"0708", "Valid":4
@@ -225,31 +225,31 @@
       "columns":["index","W","T","type","file/string","address","size","progress","status"],
       "rowdata":[
         {
-          "index":0,"W_edit":0,"T_edit":"S","type":"STARTJUMP", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":100, "status":"Verify OK"
+          "index":0,"W_edit":0,"T_edit":"S","type":"STARTJUMP", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":16384,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":1,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_FAC", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":192,"progress":100, "status":"Verify OK"
+          "index":1,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_FAC", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":192,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":2,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_APP", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":192,"progress":100, "status":"Verify OK"
+          "index":2,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_APP", "edit_file/string":"startjump.bin","edit_address":"0x80000000","edit_size":192,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":3,"W_edit":0,"T_edit":"S","type":"USER_DATA_1", "edit_file/string":"user_data_1_bak.bin","edit_address":"0x80000000","edit_size":16384,"progress":100, "status":"Verify OK"
+          "index":3,"W_edit":0,"T_edit":"S","type":"USER_DATA_1", "edit_file/string":"user_data_1_bak.bin","edit_address":"0x80000000","edit_size":16384,"progress":0, "status":"Verify OK"
         },       
         {
-          "index":4,"W_edit":1,"T_edit":"F","type":"USER_DATA_2", "edit_file/string":"user_data_2_bak.bin","edit_address":"0x80000000","edit_size":16384,"progress":100, "status":"Verify OK"
+          "index":4,"W_edit":1,"T_edit":"F","type":"USER_DATA_2", "edit_file/string":"user_data_2_bak.bin","edit_address":"0x80000000","edit_size":16384,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":5,"W_edit":0,"T_edit":"F","type":"IAP", "edit_file/string":"iap_bak.bin","edit_address":"0x80000000","edit_size":16384,"progress":100, "status":"Verify OK"
+          "index":5,"W_edit":0,"T_edit":"F","type":"IAP", "edit_file/string":"iap_bak.bin","edit_address":"0x80000000","edit_size":16384,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":6,"W_edit":0,"T_edit":"S","type":"FACTORY_LOAD", "edit_file/string":"facroty_load_bak.bin","edit_address":"0x80000000","edit_size":16384,"progress":100, "status":"Verify OK"
+          "index":6,"W_edit":0,"T_edit":"S","type":"FACTORY_LOAD", "edit_file/string":"facroty_load_bak.bin","edit_address":"0x80000000","edit_size":16384,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":7,"W_edit":1,"T_edit":"F","type":"APP1_LOAD", "edit_file/string":"app1_load_bak.bin","edit_address":"0x80000000","edit_size":16384,"progress":100, "status":"Verify OK"
+          "index":7,"W_edit":1,"T_edit":"F","type":"APP1_LOAD", "edit_file/string":"app1_load_bak.bin","edit_address":"0x80000000","edit_size":16384,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":8,"W_edit":0,"T_edit":"F","type":"APP2_LOAD", "edit_file/string":"app2_load_bak.bin","edit_address":"0x80000000","edit_size":16384,"progress":100, "status":"Verify OK"
+          "index":8,"W_edit":0,"T_edit":"F","type":"APP2_LOAD", "edit_file/string":"app2_load_bak.bin","edit_address":"0x80000000","edit_size":16384,"progress":0, "status":"Verify OK"
         }        
       ],
       "button":[{"abbr":"readsave","name":"Read and Save"}]        
