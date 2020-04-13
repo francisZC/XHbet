@@ -198,7 +198,7 @@ export default class EditableTable extends React.Component{
     // console.log(progress.style["width"])
   }
   //click button and fetch data back from 127.0.0.1:8888
-  handleClick(){
+   async handleClick(){
     var fileName, address, size
       let btnID = event.target.id;
       let temp = jsondeepCopy(this.state.boardstatus);
@@ -367,7 +367,7 @@ export default class EditableTable extends React.Component{
             
             if(writeOrnot=="1"){
               if(inputType == "F"){
-                let fetRes = fetch(urlpost+btnID,
+                let fetRes = await fetch(urlpost+btnID,
                   {
                       method:'POST',
                       headers:{
