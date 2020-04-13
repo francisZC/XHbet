@@ -205,7 +205,6 @@ export default class EditableTable extends React.Component{
             fetRes.then(res=>res.json())  //res.json() can only be called once, can't be called in console.log() before this.
 
               .then((data)=>{
-                console.log('----return-----',data, typeof(data))
                 temp['Connect']['rowdata'][0]['progress'] = data['progress'];
                 temp['Connect']['rowdata'][0]['status'] = data['status'];
                 this.setState({
@@ -245,23 +244,16 @@ export default class EditableTable extends React.Component{
 
         case "Burn":
           var btnName =  event.target.name
-          var getAllA = document.querySelectorAll("a")
-          try{
-            for(var idx in getAllA){
-              if(getAllA[idx].id == undefined)
-                break;
-              console.log(btnName)
-              if(getAllA[idx].id.indexOf(btnName)!=-1 && getAllA[idx].id.indexOf('file/string')!=-1){
-                fileName = getAllA[idx].innerHTML
-              }
-              if(getAllA[idx].id.indexOf(btnName)!=-1 && getAllA[idx].id.indexOf('address')!=-1){
-                address = getAllA[idx].innerHTML
-              }
-            }
+          let getAllW = document.querySelectorAll("input[id^='W_editReadFlash']:checked")
+          let getAllT = document.querySelectorAll("input[id^='T_editReadFlash']:checked")
+          let getAllF = document.querySelectorAll("a[id*='file/stringBurn']")
+          let getAllA = document.querySelectorAll("a[id*='addressBurn']")
+          let getAllS = document.querySelectorAll("a[id*='sizeBurn']")
+          let postRead = {
+            fileName:'',
+            baseAddress:'',
+            sizeByte:''
           }
-          catch(error){
-            console.log(error)
-          }          
           break;
 
         case "TOBOOT_CFG_APP":
@@ -299,9 +291,9 @@ export default class EditableTable extends React.Component{
           var btnName =  event.target.name
           let getAllW = document.querySelectorAll("input[id^='W_editReadFlash']:checked")
           let getAllT = document.querySelectorAll("input[id^='T_editReadFlash']:checked")
-          let getAllF = document.querySelectorAll("a[id^='file/string']")
-          let getAllA = document.querySelectorAll("a[id^='address']")
-          let getAllS = document.querySelectorAll("a[id^='size']")
+          let getAllF = document.querySelectorAll("a[id*='file/stringReadFlash']")
+          let getAllA = document.querySelectorAll("a[id*='addressReadFlash']")
+          let getAllS = document.querySelectorAll("a[id*='sizeReadFlash']")
           let postRead = {
             fileName:'',
             baseAddress:'',
@@ -317,7 +309,7 @@ export default class EditableTable extends React.Component{
             postRead.fileName = fileNameorString;
             postRead.baseAddress = baseAddress;
             postRead.sizeByte =  sizeByte;
-            
+            console.log(fileNameorString)
             if(writeOrnot=="1"){
               if(inputType == "F"){
                 let fetRes = fetch(urlpost+btnID,
