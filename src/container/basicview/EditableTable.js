@@ -26,6 +26,7 @@ export default class EditableTable extends React.Component{
     // this.updateProgress = this.updateProgress.bind(this);
   };
   componentDidMount(){
+    console.log("fetch json from server....")
     this.fetchJSON()
   }
   
@@ -210,8 +211,10 @@ export default class EditableTable extends React.Component{
       switch(btnID){
         case "Connect":
         case "EraseFullChip":
-          temp['Connect']['rowdata'][0]['progress'] = 10;
-          temp['Connect']['rowdata'][0]['status'] = 'Connecting';
+          console.log(btnID)
+          temp[btnID]['rowdata'][0]['progress'] = 10;
+          temp[btnID]['rowdata'][0]['status'] = 'Connecting';
+          let n = 0
           this.setState({
             boardstatus:temp,
           })
@@ -229,8 +232,10 @@ export default class EditableTable extends React.Component{
             fetRes.then(res=>res.json())  //res.json() can only be called once, can't be called in console.log() before this.
 
               .then((data)=>{
-                temp['Connect']['rowdata'][0]['progress'] = data['progress'];
-                temp['Connect']['rowdata'][0]['status'] = data['status'];
+                n++;
+                console.log('-----data',data,n)
+                temp[btnID]['rowdata'][0]['progress'] = data['progress'];
+                temp[btnID]['rowdata'][0]['status'] = data['status'];
                 this.setState({
                   boardstatus:temp
                 })
@@ -363,9 +368,9 @@ export default class EditableTable extends React.Component{
             postRead.fileName = fileNameorString;
             postRead.baseAddress = baseAddress;
             postRead.sizeByte =  sizeByte;
-            console.log(fileNameorString)
+            console.log(writeOrnot.length)
             if(writeOrnot=="1"){
-              if(inputType == "F"){
+              if(inputType == "File"){
                 let fetRes = await fetch(urlpost+btnID,
                   {
                       method:'POST',

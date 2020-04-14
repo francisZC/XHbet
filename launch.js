@@ -14,7 +14,7 @@ var resultRet = {
     "status":""
 }
 
-const processVal = [0, 20, 30, 40, 50, 60, 70, 80, 90, 95];
+const processVal = [0, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 function jsReadFiles(files) {
     let output = fs.readFileSync(files, 'utf8');
     return output;
@@ -90,15 +90,16 @@ http.createServer(async function(request, response) {
                 }
                 jsonInputData["parContent"] = curlJSON[command]["steps"][data]['parContent']
                 jsonInputData = JSON.stringify(jsonInputData);
+
                 var result = await curlData.processCurls(jsonInputData);
-                // console.log("-------result from curl-----", JSON.stringify(result))
                 resHex = JSON.stringify(result["parContent"]["result"]);
                 if(resHex >= 0){
                     n++;
+                    console.log(n)
                     resultRet["progress"] = processVal[n];
                     resultRet["status"] = "Connecting";
-                    if(n>10){
-                        resultRet["status"] = "OK";
+                    if(n >= 9){
+                        resultRet["status"] = "Connect OK";
                     }
                     
                 }
