@@ -52,7 +52,7 @@
         },
         {
             "cuuar":"ExtendedErase",
-            "parContent":{"cmd": "extEraseMem", "para": {"timeOutCnt": 90,"nbrPages": 2, "pagesList": ["0x0001", "0x0002"]}}
+            "parContent":{"cmd": "extEraseMem", "para": {"timeOutCnt": 90,"nbrPages": 2, "pagesList": [0]}}
         },
         {
             "cuuar":"StartUboot",

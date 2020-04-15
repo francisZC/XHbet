@@ -14,7 +14,8 @@ var resultRet = {
     "status":""
 }
 
-const processVal = [0, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+const processValConn = [0, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+const processValErase = [0, 10, 99, 100];
 function jsReadFiles(files) {
     let output = fs.readFileSync(files, 'utf8');
     return output;
@@ -94,19 +95,38 @@ http.createServer(async function(request, response) {
                 var result = await curlData.processCurls(jsonInputData);
                 resHex = JSON.stringify(result["parContent"]["result"]);
                 if(resHex >= 0){
-                    n++;
+                    
                     console.log(n)
-                    resultRet["progress"] = processVal[n];
-                    resultRet["status"] = "Connecting";
-                    if(n >= 9){
-                        resultRet["status"] = "Connect OK";
+                    if(command == "Connect"){
+                        n++;
+                        resultRet["progress"] = processValConn[n];
+                        resultRet["status"] = "Connecting";
+                        if(n >= 9){
+                            resultRet["status"] = "Connect OK";
+                        }
+                    }                        
+                    else if(command == 'EraseFullChip'){
+                        n++;
+                        resultRet["progress"] = processValErase[n];
+                        resultRet["status"] = "Erasing";
+                        if(n >= 3){
+                            resultRet["status"] = "Erase OK";
+                        }
                     }
+                        
+                    
+                    
                     
                 }
                 else{
+                    if(command == "Connect"){
+                        resultRet["progress"] = processValConn[n];
+                        resultRet["status"] = "Time out";
+                    }else if(command == 'EraseFullChip'){
+                        resultRet["progress"] = processValErase[n];
+                        resultRet["status"] = "Time out";
+                    }
                     
-                    resultRet["progress"] = processVal[n];
-                    resultRet["status"] = "Time out";
                     
                 }
                 
