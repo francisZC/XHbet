@@ -23,6 +23,7 @@ function jsReadFiles(files) {
 var curlJSON = JSON.parse(jsReadFiles("./curl.json"));
 
 const STM32_MAX_BYTES_TO_READ  = 255;
+const STM32_MAX_BYTES_TO_WRITE = 256;
 var sio = require('socket.io');
 /**
  * const structure which will comes from json and build as base structure
@@ -134,8 +135,89 @@ http.createServer(async function(request, response) {
             response.write(JSON.stringify(resultRet));
             response.end();
             break;
+
+        case "Burn":
+                
+                request.on('data', async function (chunk) {
+                    let dataBurn = {
+                        "restTag": "suua", 
+                        "actionId": 30001, 
+                        "parFlag": 1, 
+                        "parContent": {
+                            "cmd": "writemem", 
+                            "para": {
+                                "timeOutCnt": 30,
+                            }
+                        }
+                    }
+                    Data += chunk;
+                    Data = JSON.parse(Data);
+                    let fileName = Data.fileName;
+                    let baseAddress = parseInt(Data.baseAddress);
+                    let sizeInByte = parseInt(Data.sizeByte, 16);
+                    /** Recieve data type:
+                     * { 
+                     *      fileName: 'startjump.bin',
+                     *      baseAddress: '0x80000000',
+                     *      sizeByte: '192' 
+                     *  }
+                     */
+                    let readFlashOffset = 0;
+                    let nextLenToRead = STM32_MAX_BYTES_TO_READ;
+                    let address = baseAddress;
+                    let sizeToSave = 0;
+                    let readFromFile = '';
+                    let fileStats;
+                    //file reading
+                    try{
+                        fileStats = fs.statSync(fileName);
+                    }catch(error){
+                        console.log("file is not existed")
+                        resultRet.status = "No file";
+                        resultRet.progress = 0
+                    }
+                    
+                   
+                    let fileSize = fileStats.size
+                    sizeToSave = Math.min(fileSize, Data.sizeByte);
+                    let fd = fs.openSync(fileName,'r');
+                    let buf = new Buffer.alloc(sizeToSave);
+                    let bytesRead = fs.readSync(fd, buf, 0, sizeToSave, 0);
+                    console.log('buffer slice',buf.slice(0, bytesRead-1))
+                    readFromFile = buf.toString('hex');
+
+                    if (readFlashOffset + STM32_MAX_BYTES_TO_WRITE > sizeInByte){
+                        nextLenToRead = sizeInByte - readFlashOffset
+                    }else{
+                        nextLenToRead = STM32_MAX_BYTES_TO_WRITE;
+                    }
+
+                    while(readFlashOffset < sizeInByte){
+                        let paraField = {'timeOutCnt':30, 'addr':800, 'nbrRead':1};
+                        paraField["addr"] = '0x'+ address.toString(16);
+                        address = baseAddress + readFlashOffset;
+                        paraField["nbrRead"] = 1;
+                        dataBurn["parContent"]["para"] = paraField;
+    
+                        console.log('----dataBurn',dataBurn)
+                        let result = await curlData.processCurls(JSON.stringify(dataBurn));
+    
+                        resHex = JSON.stringify(result["parContent"]["result"]);
+                        console.log('----------------save-return----',result,resHex)
+    
+                        parContentResult =  result['parContent']['result']
+                        parContentHex = result['parContent']['hex']
+                        readFlashOffset = readFlashOffset + result.length/2;
+                        
+                    }                 
+                })
+                request.on('end',function () {
+                });
+        
+                break;
+
         case "ReadandSave":
-            
+
             request.on('data', async function (chunk) {
                 let dataReadSave = {
                     "restTag": "suua", 

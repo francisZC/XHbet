@@ -307,10 +307,49 @@ export default class EditableTable extends React.Component{
           let getAllBurnF = document.querySelectorAll("a[id*='file/stringBurn']")
           let getAllBurnA = document.querySelectorAll("a[id*='addressBurn']")
           let getAllBurnS = document.querySelectorAll("a[id*='sizeBurn']")
-          let postReadBurn = {
+          let postBurn = {
             fileName:'',
             baseAddress:'',
             sizeByte:''
+          }
+
+          for(let i=0; i<getAllBurnW.length;i++){
+            let writeOrnot = getAllBurnW[i].nextSibling.nodeValue.trim();
+            let inputType = getAllBurnT[i].nextSibling.nodeValue.trim();
+            let fileNameorString = getAllBurnF[i].text;
+            let baseAddress = getAllBurnA[i].text;
+            let sizeByte = getAllBurnS[i].text;
+            
+            postBurn.fileName = fileNameorString;
+            postBurn.baseAddress = baseAddress;
+            postBurn.sizeByte =  sizeByte;
+            console.log(writeOrnot.length)
+            if(writeOrnot=="1"){
+              if(inputType == "File"){
+                let fetRes = await fetch(urlpost+btnID,
+                  {
+                      method:'POST',
+                      headers:{
+                          'Accept': 'application/json',
+                          'Content-Type': 'application/json',
+                          "Access-Control-Allow-Origin":"*",
+                          "Access-Control-Allow-Headers":"Content-Type,Access-Token"
+                      },
+                      body: JSON.stringify(postBurn)
+                  })
+                  fetRes.then(res=>res.json())
+                    .then((data)=>{
+               
+                     
+                    })
+                    
+                    .catch( (error) => {
+                        console.log('request error', error);
+                        return { error };
+                    });
+              }
+            }
+            
           }
           break;
 
