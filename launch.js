@@ -150,11 +150,12 @@ http.createServer(async function(request, response) {
                             }
                         }
                     }
+
                     Data += chunk;
                     Data = JSON.parse(Data);
                     let fileName = Data.fileName;
                     let baseAddress = parseInt(Data.baseAddress);
-                    let sizeInByte = parseInt(Data.sizeByte, 16);
+                    let sizeInByte = Data.sizeByte;
                     /** Recieve data type:
                      * { 
                      *      fileName: 'startjump.bin',
@@ -167,7 +168,9 @@ http.createServer(async function(request, response) {
                     let address = baseAddress;
                     let sizeToSave = 0;
                     let readFromFile = '';
+                    let readByte;
                     let fileStats;
+
                     //file reading
                     try{
                         fileStats = fs.statSync(fileName);
@@ -177,7 +180,6 @@ http.createServer(async function(request, response) {
                         resultRet.progress = 0
                     }
                     
-                   
                     let fileSize = fileStats.size
                     sizeToSave = Math.min(fileSize, Data.sizeByte);
                     let fd = fs.openSync(fileName,'r');
@@ -185,8 +187,12 @@ http.createServer(async function(request, response) {
                     let bytesRead = fs.readSync(fd, buf, 0, sizeToSave, 0);
                     console.log('buffer slice',buf.slice(0, bytesRead-1))
                     readFromFile = buf.toString('hex');
+                    for(let i=0; i < sizeToSave-1; i++){
+                        let buff = buf[i].toString(16)
+                        console.log('0x'+buff)
+                    }
 
-                    if (readFlashOffset + STM32_MAX_BYTES_TO_WRITE > sizeInByte){
+                    if (sizeToSave <= STM32_MAX_BYTES_TO_WRITE){
                         nextLenToRead = sizeInByte - readFlashOffset
                     }else{
                         nextLenToRead = STM32_MAX_BYTES_TO_WRITE;
