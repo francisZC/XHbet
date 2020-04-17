@@ -10,7 +10,10 @@ export default class Drawer extends React.Component{
     }
     render(){
         return(
-            <div>
+            <div id="drawerTop">
+                <div id="hidetoSeek">
+                    
+                </div>
                 <div className="drawer-box">
                     <span>文件</span>
                     <span>打印</span>

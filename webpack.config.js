@@ -20,10 +20,7 @@ module.exports={
                  loader: 'style-loader',
                 },
              {loader:'css-loader',
-             options:{
-                 modules:{localIdentName:'[name]_[local]-[hash:5]'}
-                 
-             }
+        
             }]},
             // {test:  /\.css$/, use:['style-loader','css-loader?modules&localIdentName=[name]_[local]-[hash:5]']},
             //通过为css-loader添加modules参数，启用css模块化
