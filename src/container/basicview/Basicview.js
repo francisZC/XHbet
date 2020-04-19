@@ -14,7 +14,7 @@ const { Column, ColumnGroup } = Table;
 import classNames from 'classnames';
 import Status from "./Status"
 import EditableTable from "./EditableTable"
-import Drawer from './Drawer'
+
 // import '../../../resource/css/font-awesome.min.css';
 
 // require('es6-promise').polyfill();
@@ -44,7 +44,7 @@ export default class Basicview extends Component {
         console.log('this is basic view')
         return (
             <div className="loginbackground view-level" style={{position:"relative",background:"#FFFFFF",height:this.state.height,maxHeight:this.state.height,width:'90%',margin:this.state.margin,display:this.state.hide,overflow:'scroll',overflowX:'hidden',overflowY:'hidden'}}>
-                <Drawer></Drawer>
+                
                 <div id="syspath" className="form-group" style={{marginTop:this.state.margintop, margin:"0 auto",
                     paddingLeft:this.state.paddingleft, paddingTop:this.state.paddingtop,width:"90%",height:"100%"}}>
                     <EditableTable />

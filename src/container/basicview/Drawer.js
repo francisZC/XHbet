@@ -7,13 +7,17 @@ export default class Drawer extends React.Component{
         this.state = {
 
         }
+        this.showDrawer = this.showDrawer.bind(this)
+        this.hideDrawer = this.hideDrawer.bind(this)
     }
     render(){
+        this.showDrawer()
         return(
-            <div id="drawerTop">
-                <div id="hidetoSeek">
+            <div id="drawerTop" style={{position:"absolute"}}>
+                <div id="hidetoSeek" onMouseOver={this.showDrawer} onMouseLeave={this.hideDrawer}>
                     
                 </div>
+                <div id="bgDiv"></div>
                 <div className="drawer-box">
                     <span>文件</span>
                     <span>打印</span>
@@ -22,5 +26,35 @@ export default class Drawer extends React.Component{
                 </div>
             </div>
         )
+    }
+
+    showDrawer(){
+        console.log('----show drawer')
+
+        $('#bgDiv').css({
+            width: "90%",
+            display: "block",
+            float: "right",
+            transition: "opacity .5s"
+        });
+
+        $('.drawer-box').css({
+            left: "0px",
+            transition: "left 1s"
+        });
+    }
+
+    hideDrawer(){
+        console.log('----hide drawer')
+
+        $('#bgDiv').css({
+            display: "none",
+            transition: "opacity .5s"
+        });
+
+        $('.drawer-box').css({
+            left: "-15%",
+            transition: "left 1s"
+        });
     }
 }

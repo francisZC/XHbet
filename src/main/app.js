@@ -13,7 +13,7 @@ import Foot from "../foot/foot"
 import Head from "../head/head"
 
 import Basicview from "../container/basicview/Basicview"
-
+import Drawer from '../container/basicview/Drawer'
 import './App.css';
 // import fetch from 'isomorphic-fetch';
 // import { b64_sha1,jsondeepCopy } from '../util/util.js';
@@ -45,12 +45,12 @@ class App extends Component{
     
     render() {
         return(
-        <div style={{overflowY:'hidden',overflowX:'hidden'}}>         
+        <div style={{overflowY:'hidden',overflowX:'hidden',height:'100%', position:"relative"}}>         
             <div>
                 <Head ref="head"/>
             </div>
-        
-            <div>
+            <Drawer></Drawer>
+            <div style={{float:"right"}}>
                 <h3>{this.state.language.apptitle}</h3>
                 <Basicview ref="Basicview"/>
             </div>
