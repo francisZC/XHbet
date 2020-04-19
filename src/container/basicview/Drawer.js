@@ -14,10 +14,10 @@ export default class Drawer extends React.Component{
         this.showDrawer()
         return(
             <div id="drawerTop" style={{position:"absolute"}}>
-                <div id="hidetoSeek" onMouseOver={this.showDrawer} onMouseLeave={this.hideDrawer}>
+                <div id="hidetoSeek" onMouseOver={this.showDrawer} >
                     
                 </div>
-                <div id="bgDiv"></div>
+                <div id="bgDiv" onClick={this.hideDrawer}></div>
                 <div className="drawer-box">
                     <span>文件</span>
                     <span>打印</span>
@@ -32,7 +32,7 @@ export default class Drawer extends React.Component{
         console.log('----show drawer')
 
         $('#bgDiv').css({
-            width: "90%",
+            width: "100%",
             display: "block",
             float: "right",
             transition: "opacity .5s"

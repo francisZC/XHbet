@@ -31,7 +31,7 @@ var jsonInputData = {
 
  async function processCurls(reqData){
     //  let data1 = JSON.stringify(reqData)
-     console.log('-------req data',reqData)
+     console.log('-------req data',typeof(reqData),reqData)
         try{
             let result = await fetch(requestURL,
                 {
