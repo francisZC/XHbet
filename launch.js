@@ -185,7 +185,6 @@ http.createServer(async function(request, response) {
                     let fd = fs.openSync(fileName,'r');
                     let buf = new Buffer.alloc(sizeToSave);
                     let bytesRead = fs.readSync(fd, buf, 0, sizeToSave, 0);
-                    console.log('buffer slice',buf.slice(0, bytesRead-1))
                     readFromFile = buf.toString('hex');
                     for(let i=0; i < sizeToSave-1; i++){
                         let buff = buf[i].toString(16)
@@ -199,10 +198,9 @@ http.createServer(async function(request, response) {
                     }
 
                     while(readFlashOffset < sizeInByte){
-                        let paraField = {'timeOutCnt':30, 'addr':800, 'nbrRead':1};
+                        let paraField = {'timeOutCnt':30, 'addr':800, 'byteArray':['1']};
                         paraField["addr"] = '0x'+ address.toString(16);
                         address = baseAddress + readFlashOffset;
-                        paraField["nbrRead"] = 1;
                         dataBurn["parContent"]["para"] = paraField;
     
                         console.log('----dataBurn',dataBurn)
