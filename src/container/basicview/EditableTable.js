@@ -104,7 +104,7 @@ export default class EditableTable extends React.Component{
                                                                             id={rowKeys[key]+tableName+id}>{val+'%'}
                                                                           </div>
                                                                         </div>)
-                                                                          :(<a href='#' id={rowKeys[key]+tableName+id} style={{textOverflow:"ellipsis"}} data-pk='1'data-type="text">
+                                                                          :(<a href='#' id={rowKeys[key]+tableName+id} style={{textOverflow:"ellipsis",overflow:"hidden",wordBreak:"break-all"}} data-pk='1'data-type="text">
                                                               {val}
                                                             </a>
                                                           )
@@ -358,8 +358,10 @@ export default class EditableTable extends React.Component{
           let getAllValueInput = document.querySelectorAll("a[id^='value_input']");
           let getAllValueCalc = document.querySelectorAll("th[id^='value_calc']");
           let getAllLength = document.querySelectorAll("th[id^='lengthBootConfigEncoder']");
-          let FACConfig = document.querySelector("a[id='edit_file/stringBurn1']");
-          let APPConfig = document.querySelector("a[id='edit_file/stringBurn2']");
+          let FACConfigBurn = document.querySelector("a[id='edit_file/stringBurn1']");
+          let APPConfigBurn = document.querySelector("a[id='edit_file/stringBurn2']");
+          let FACConfigSave = document.querySelector("a[id='edit_file/stringReadFlash1']");
+          let APPConfigSave = document.querySelector("a[id='edit_file/stringReadFlash2']");
           let pattern = /[A-Fa-f]/;
           let FACString = "";
           for(let idx=0; idx<getAllValueInput.length;idx++){
@@ -377,8 +379,8 @@ export default class EditableTable extends React.Component{
               FACString += getAllValueCalc[idx].innerHTML;
             }
           }
-          FACConfig.innerHTML = FACString;
-          APPConfig.innerHTML = FACString;
+          FACConfigBurn.innerHTML =  APPConfigBurn.innerHTML =  FACString;
+          FACConfigSave.innerHTML =  APPConfigSave.innerHTML =  FACString.toLocaleLowerCase();
           break;
         case "TOBOOT_CFG_FAC":
           var btnName =  event.target.name

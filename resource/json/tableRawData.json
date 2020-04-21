@@ -59,10 +59,10 @@
           "index":0,"W_edit":0,"T_edit":"F","type":"STARTJUMP", "edit_file/string":"startjump.bin","edit_address":"0x8000000","edit_size":16384,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":1,"W_edit":1,"T_edit":"S","type":"BOOT_CFG_FAC", "edit_file/string":"startjump.bin","edit_address":"0x8000000","edit_size":192,"progress":0, "status":"Verify OK"
+          "index":1,"W_edit":1,"T_edit":"S","type":"BOOT_CFG_FAC", "edit_file/string":"AA55AA555F5F68785F5F656D616E","edit_address":"0x8000000","edit_size":192,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":2,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_APP", "edit_file/string":"startjump.bin","edit_address":"0x8000000","edit_size":192,"progress":0, "status":"Verify OK"
+          "index":2,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_APP", "edit_file/string":"AA55AA555F5F68785F5F656D616E","edit_address":"0x8000000","edit_size":192,"progress":0, "status":"Verify OK"
         },        
         {
           "index":3,"W_edit":0,"T_edit":"F","type":"USER_DATA_1", "edit_file/string":"startjump.bin","edit_address":"0x8000000","edit_size":16384,"progress":0, "status":"Verify OK"
@@ -228,10 +228,10 @@
           "index":0,"W_edit":0,"T_edit":"S","type":"STARTJUMP", "edit_file/string":"startjump.bin","edit_address":"0x8000000","edit_size":16384,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":1,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_FAC", "edit_file/string":"startjump.bin","edit_address":"0x8000000","edit_size":192,"progress":0, "status":"Verify OK"
+          "index":1,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_FAC", "edit_file/string":"aa55aa555f5f68785f5f656d616e5f74","edit_address":"0x8000000","edit_size":192,"progress":0, "status":"Verify OK"
         },        
         {
-          "index":2,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_APP", "edit_file/string":"startjump.bin","edit_address":"0x8000000","edit_size":192,"progress":0, "status":"Verify OK"
+          "index":2,"W_edit":1,"T_edit":"F","type":"BOOT_CFG_APP", "edit_file/string":"aa55aa555f5f68785f5f656d616e5f74","edit_address":"0x8000000","edit_size":192,"progress":0, "status":"Verify OK"
         },        
         {
           "index":3,"W_edit":0,"T_edit":"S","type":"USER_DATA_1", "edit_file/string":"user_data_1_bak.bin","edit_address":"0x8000000","edit_size":16384,"progress":0, "status":"Verify OK"
@@ -252,7 +252,7 @@
           "index":8,"W_edit":0,"T_edit":"F","type":"APP2_LOAD", "edit_file/string":"app2_load_bak.bin","edit_address":"0x8000000","edit_size":16384,"progress":0, "status":"Verify OK"
         }        
       ],
-      "button":[{"abbr":"readsave","name":"Read and Save"}]        
+      "button":[{"abbr":"readsave","name":"Read and Save"},{"abbr":"fullBin","name":"Create Full Bin"}]        
     },
     "BootConfigDecoder":{
       "title":"Step5.1 BOOT CONFIG DECODER",

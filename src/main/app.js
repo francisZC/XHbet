@@ -50,7 +50,7 @@ class App extends Component{
                 <Head ref="head"/>
             </div>
             <Drawer></Drawer>
-            <div style={{float:"right"}}>
+            <div>
                 <h3>{this.state.language.apptitle}</h3>
                 <Basicview ref="Basicview"/>
             </div>
