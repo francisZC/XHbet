@@ -31,6 +31,7 @@
     "node-fetch": "^2.6.0",
     "node-sass": "^4.13.0",
     "react-kendo": "^0.13.11",
+    "react-router-dom": "^5.1.2",
     "react-switch": "^5.0.1",
     "react-x-editable": "0.0.10-beta",
     "sass-loader": "^8.0.0",

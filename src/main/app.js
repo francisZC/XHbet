@@ -12,7 +12,7 @@ import ReactDOM from "react-dom";
 import Foot from "../foot/foot"
 import Head from "../head/head"
 import Drawer from '../container/basicview/Drawer'
-
+import {BrowserRouter} from 'react-router-dom'
 import Basicview from "../container/basicview/Basicview"
 import './App.css';
 // import fetch from 'isomorphic-fetch';
@@ -49,7 +49,10 @@ class App extends Component{
             <div>
                 <Head ref="head"/>
             </div>
-            <Drawer></Drawer>
+            <BrowserRouter>
+                <Drawer></Drawer>
+            </BrowserRouter>
+           
             <div>
                 <h3>{this.state.language.apptitle}</h3>
                 <Basicview ref="Basicview"/>

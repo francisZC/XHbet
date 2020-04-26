@@ -5,7 +5,9 @@ export default class Drawer extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-
+            menus:[
+                {name:''}
+            ]
         }
         this.showDrawer = this.showDrawer.bind(this)
         this.hideDrawer = this.hideDrawer.bind(this)
@@ -13,23 +15,84 @@ export default class Drawer extends React.Component{
     render(){
         this.showDrawer()
         return(
-            <div id="drawerTop" style={{position:"absolute"}}>
-                <div id="hidetoSeek" onMouseOver={this.showDrawer} >
-                    
+            <div id="menu">
+                <div id="ensconce">
+                    <h2>
+                        <img src="images/show.png" alt="" />
+                        点击这里展开
+                    </h2>
                 </div>
-                <div id="bgDiv" onClick={this.hideDrawer}></div>
-                <div className="drawer-box">
-                    <span>文件</span>
-                    <span>打印</span>
-                    <span>读数据</span>
-                    <span>二维码</span>
+                <!--显示菜单-->
+                <div id="open">
+                    <div class="navH">
+                        <span><img class="obscure" src="images/obscure.png" alt="" /></span>
+                    </div>
+                    <div class="navBox">
+                        <ul>
+                            <li>
+                                <h2 class="obtain">IAP-UBOOT烧录<i></i></h2>
+                                <div class="secondary">
+                                    <h3>故宫</h3>
+                                    <h3>十三陵</h3>
+                                    <h3>圆明园</h3>
+                                    <h3>长城</h3>
+                                    <h3>雍和宫</h3>
+                                    <h3>天坛公园</h3>
+                                </div>
+                            </li>
+                            <li>
+                                <h2 class="obtain">南京景点<i></i></h2>
+                                <div class="secondary">
+                                    <h3>栖霞寺</h3>
+                                    <h3>夫子庙</h3>
+                                    <h3>海底世界</h3>
+                                    <h3>中山陵</h3>
+                                    <h3>乌衣巷</h3>
+                                    <h3>音乐台</h3>
+                                </div>
+                            </li>
+                            <li>
+                                <h2 class="obtain">上海景点<i></i></h2>
+                                <div class="secondary">
+                                    <h3>东方明珠</h3>
+                                    <h3>外滩</h3>
+                                    <h3>豫园</h3>
+                                    <h3>文庙</h3>
+                                    <h3>世博园</h3>
+                                    <h3>田子坊</h3>
+                                </div>
+                            </li>
+                            <li>
+                                <h2 class="obtain">深圳景点<i></i></h2>
+                                <div class="secondary">
+                                    <h3>华侨城</h3>
+                                    <h3>观澜湖</h3>
+                                    <h3>世界之窗</h3>
+                                    <h3>东门老街</h3>
+                                    <h3>七娘山</h3>
+                                    <h3>光明农场</h3>
+                                </div>
+                            </li>
+                            <li>
+                                <h2 class="obtain">广州景点<i></i></h2>
+                                <div class="secondary">
+                                    <h3>白云山</h3>
+                                    <h3>长隆</h3>
+                                    <h3>黄花岗公园</h3>
+                                    <h3>中山纪念堂</h3>
+                                    <h3>华南植物园</h3>
+                                    <h3>南沙湿地公园</h3>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+
         )
     }
 
     showDrawer(){
-        console.log('----show drawer')
 
         $('#bgDiv').css({
             width: "100%",
@@ -45,7 +108,6 @@ export default class Drawer extends React.Component{
     }
 
     hideDrawer(){
-        console.log('----hide drawer')
 
         $('#bgDiv').css({
             display: "none",
