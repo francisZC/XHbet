@@ -6,7 +6,11 @@ export default class Drawer extends React.Component{
         super(props)
         this.state = {
             menus:[
-                {name:''}
+                {name:'IAP-UBOOT烧录', link:'/burn'},
+                {name:'FULL-BIN镜像制作', link:'',
+                subMenu:[{name:'静态参数表', link:'/fullbin/statictable'},{name:'FULL-BIN生成', link:'/fullbin/fullbingenerate'}]},
+                {name:'IAP-DWL应用下载', link:'/iap_download'},
+                {name:'LpcIdScan扫描', link:'/LpcIdScan'},
             ]
         }
         this.showDrawer = this.showDrawer.bind(this)
@@ -22,7 +26,7 @@ export default class Drawer extends React.Component{
                         点击这里展开
                     </h2>
                 </div>
-                <!--显示菜单-->
+                {/* <!--显示菜单--> */}
                 <div id="open">
                     <div class="navH">
                         <span><img class="obscure" src="images/obscure.png" alt="" /></span>
@@ -30,14 +34,10 @@ export default class Drawer extends React.Component{
                     <div class="navBox">
                         <ul>
                             <li>
-                                <h2 class="obtain">IAP-UBOOT烧录<i></i></h2>
+                                <h2 class="obtain"><i></i></h2>
                                 <div class="secondary">
                                     <h3>故宫</h3>
                                     <h3>十三陵</h3>
-                                    <h3>圆明园</h3>
-                                    <h3>长城</h3>
-                                    <h3>雍和宫</h3>
-                                    <h3>天坛公园</h3>
                                 </div>
                             </li>
                             <li>
