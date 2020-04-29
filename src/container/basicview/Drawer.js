@@ -28,28 +28,30 @@ export default class Drawer extends React.Component{
                 </div>
                 {/* <!--显示菜单--> */}
                 <div id="open">
-                    <div class="navH">
-                        <span><img class="obscure" src="images/obscure.png" alt="" /></span>
+                    <div className="navH">
+                        <span><img className="obscure" src="images/obscure.png" alt="" /></span>
                     </div>
-                    <div class="navBox">
+                    <div className="navBox">
                    
-                               {this.state.menus.map((menu, index)=>{
-                                   return   <ul>
+                               {
+                                    this.state.menus.map((menu, index)=>{
+                                    return   <ul>
                                                 <li>
-                                                <h2 class="obtain">menu.name<i></i></h2>
+                                                <h2 class="obtain">{menu.name}<i></i></h2>
 
                                                 { 
                                                     menu.subMenu && menu.subMenu.map((submenu, id)=>{
-                                                        return <div class="secondary">
-                                                        <h3>submenu.name</h3>
+                                                        return <div className="secondary">
+                                                        <h3>{submenu.name}</h3>
                                                         </div>
                                                     })
 
-                                                }}
+                                                }
                                                 
                                                 </li>
                                             </ul>
-                               })}
+                                    })
+                                }
                              
                            
                     </div>
