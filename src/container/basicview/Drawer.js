@@ -21,10 +21,10 @@ export default class Drawer extends React.Component{
         return(
             <div id="menu">
                 <div id="ensconce">
-                    <h2>
-                        <img src="images/show.png" alt="" />
+                    <h3>
+                        <img src="../../../resource/img/show.png" alt="" />
                         点击这里展开
-                    </h2>
+                    </h3>
                 </div>
                 {/* <!--显示菜单--> */}
                 <div id="open">
