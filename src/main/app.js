@@ -9,28 +9,21 @@ import React,  {
     }from "react";
 import ReactDOM from "react-dom";
 // import classNames from 'classnames';
-import Foot from "../foot/foot"
-import Head from "../head/head"
-import Drawer from '../container/basicview/Drawer'
-import {BrowserRouter} from 'react-router-dom'
-import Basicview from "../container/basicview/Basicview"
+
+import Drawer from '../container/Drawer'
+import EditableTable from "../container/EditableTable"
+import StaticTable from "../container/StaticTable"
+import TabsControl from '../container/TabsControl'
 import './App.css';
 // import fetch from 'isomorphic-fetch';
 // import { b64_sha1,jsondeepCopy } from '../util/util.js';
 // require('es6-promise').polyfill();
 
-
-var winWidth;
-var winHeight;
-var mqttconf={};
-
-var timeouthandle = null;
-var temprun = false;
 class App extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            width: 1024,
+            width: "100%",
             height: "100%",
             headfootheight: 50,
             headfootminheight: 50,
@@ -40,28 +33,31 @@ class App extends Component{
             language:{
                 "apptitle":"Xiaohui Bootloader Excel Tools V0.1"
             },
+            drawerMsg:""
         };
+    }
+
+    getDrawMsg = (msg)=>{
+        this.setState({
+            drawerMsg: msg
+        })
     }
     
     render() {
         return(
-        <div style={{overflowY:'hidden',overflowX:'hidden',height:'100%', position:"relative"}}>         
-            <div>
-                <Head ref="head"/>
-            </div>
-            <BrowserRouter>
-                <Drawer></Drawer>
-            </BrowserRouter>
-           
-            <div>
-                <h3>{this.state.language.apptitle}</h3>
-                <Basicview ref="Basicview"/>
-            </div>
+        <div style={{overflowY:'hidden',overflowX:'hidden', position:"relative"}}>         
+       
+         
+            <Drawer getDrawMsg={this.getDrawMsg}></Drawer>
+            <div id='mainDiv' style={{width:this.state.width, height:this.state.height, backgroundImage:"url('../resource/image/zhihe.jpg')",backgroundSize:"100% 100%",MozBackgroundSize:"100% 100%"}}>
+                <h2>{this.state.language.apptitle}</h2>
 
-            <div>
-                <Foot ref="foot"/>
-
+                <TabsControl selectedComponent={this.state.drawerMsg}>
+                    <EditableTable name="burn"></EditableTable>
+                    <StaticTable name="statictable"></StaticTable>
+                </TabsControl>
             </div>
+      
       
         </div>
         );

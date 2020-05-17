@@ -29,7 +29,8 @@ export default class Drawer extends React.Component{
                 {/* <!--显示菜单--> */}
                 <div id="open">
                     <div className="navH">
-                        <span><img className="obscure" src="images/obscure.png" alt="" /></span>
+                        FMPT菜单
+                        <span><img className="obscure" src="../../../resource/img/obscure.png" alt="" /></span>
                     </div>
                     <div className="navBox">
                    

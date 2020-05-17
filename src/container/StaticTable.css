@@ -1,0 +1,45 @@
+.title-label{
+  text-align: center;
+}
+
+.statictable-form{
+  display: inline-block;
+  padding-left: 225px;  
+  
+}
+.field-box{
+  line-height: 30px;
+  border-bottom: solid 1px;
+  margin-top: 5px;
+}
+
+.field-box > div{
+  display: inline-block;
+  
+}
+
+.statictable-form .field-label {
+  display: inline-block;
+  color: #434343;
+  margin-left: 5px;
+}
+.statictable-form .field-text {
+  display: inline-block;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+.switch-cont{
+  margin-left: 5px;
+}
+
+input[type=button]{
+    width: 110px;
+    height: 30px;
+    font-size: 16px;
+    color: #fff;
+    background: #038d21;
+    border-radius: 5px;
+    top: 50px;
+    left: 30%;
+    float: right;
+}

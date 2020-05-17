@@ -43,3 +43,9 @@
 .view-level{
     z-index: 0;
 }
+#mainDiv:after{
+    content:'';
+    display: block;
+    padding-bottom: 70%;
+
+}
