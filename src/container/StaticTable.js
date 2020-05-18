@@ -15,7 +15,7 @@ export default class StaticConfiguration extends React.Component{
       width:"90%",
       margin:"0 auto",
       statictabletitle:"Configuration Static Parameters",
-      boardtype:"",
+      boardtype:["type-1","type-2","type-3"],
       staticConfiguration:[
           {id:"1", filename:"startjump.bin", address:"",length:"",checked:""},
           {id:"2", filename:"aa55aa555f5f68785f5f656d616e5f74", address:"",length:"",checked:""},
@@ -36,7 +36,6 @@ export default class StaticConfiguration extends React.Component{
 
   handleChange =(event)=> {
     let staticConfig = jsondeepCopy(this.state.staticConfiguration);
-    
     const targetId = event.target.id;
     let index = targetId.replace(/[^0-9]/ig,"");
     let field = targetId.split("-")[0]
@@ -63,6 +62,13 @@ export default class StaticConfiguration extends React.Component{
     return (
       <div style={{width:new_state.width, margin:new_state.margin}}>
         <div  className="title-label"><label>{new_state.statictabletitle}</label></div>
+        <select title="选择板子类型">
+          {new_state.boardtype.map((item, index)=>{
+            return <option id={item}>
+              {item}
+            </option>
+          })}
+        </select>
         <form  onSubmit={this.handleSubmit}  noValidate autoComplete="off" className="statictable-form">
           {new_state.staticConfiguration.map((item, index)=>{
             return(
@@ -85,6 +91,9 @@ export default class StaticConfiguration extends React.Component{
       
     );
   }
+  updateStaticTable = () => {
+
+  }
 
   saveFormData = () => {
     let staticConfig = jsondeepCopy(this.state.staticConfiguration);
@@ -95,6 +104,8 @@ export default class StaticConfiguration extends React.Component{
 
     this.setState({
       staticConfiguration: staticConfig
+    }, function () {
+      console.log('------save the data', this.state.staticConfiguration)
     })
     // console.log('------save the data', staticConfiguration)
   }
