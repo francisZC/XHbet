@@ -114,10 +114,6 @@ http.createServer(async function(request, response) {
                             resultRet["status"] = "Erase OK";
                         }
                     }
-                        
-                    
-                    
-                    
                 }
                 else{
                     if(command == "Connect"){
@@ -287,8 +283,27 @@ http.createServer(async function(request, response) {
         case ".json":
             console.log("Client require :"+pathname);
             Data = fs.readFileSync("."+pathname,'utf-8');
-            response.writeHead(200, {"Content-Type": "application/json", "Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"Content-Type,Access-Token"});            response.write(JSON.stringify(Data));
+            response.writeHead(200, {"Content-Type": "application/json", "Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"Content-Type,Access-Token"});            
+            response.write(JSON.stringify(Data));
             response.end();
+            break;
+
+        case "savedata":
+            const staticTablePath = './resource/json/';
+
+            console.log("Client require :"+pathname);
+            request.on('data', async function (chunk) {
+                
+                Data += chunk;
+                Data = JSON.parse(Data);
+                let writeFileName = Data.boardtype;
+                let fullFilePath = staticTablePath + writeFileName+'.json';
+                fs.writeFile(fullFilePath, Data.staticConfig, (err)=>{
+                    if (err) throw err;
+                    response.end('write file success');
+                })
+                console.log("static data is",Data)
+            })
             break;
         case ".css":
             console.log("Client require :"+pathname);

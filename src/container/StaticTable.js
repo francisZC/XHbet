@@ -4,7 +4,11 @@ import {jsondeepCopy} from '../util/util'
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import "./StaticTable.css"
-
+const urlpost = "http://localhost:8888/";
+let FullStaticConfiguration = {
+  boardtype:"",
+  staticConfig:""
+}
 export default class StaticConfiguration extends React.Component{
   
   constructor(props) {
@@ -61,14 +65,17 @@ export default class StaticConfiguration extends React.Component{
     const new_state = this.state;
     return (
       <div style={{width:new_state.width, margin:new_state.margin}}>
-        <div  className="title-label"><label>{new_state.statictabletitle}</label></div>
-        <select title="选择板子类型">
-          {new_state.boardtype.map((item, index)=>{
-            return <option id={item}>
-              {item}
-            </option>
-          })}
-        </select>
+        <div  className="title-label"><h4>{new_state.statictabletitle}</h4><br/>
+          <label>选择板子类型</label>
+          <select id="select-board-type" style={{marginLeft:"10px", borderRadius:"5px"}}>
+            {new_state.boardtype.map((item, index)=>{
+              return <option id={item} value={item}>
+                {item}
+              </option>
+            })}
+          </select>
+        </div>
+        
         <form  onSubmit={this.handleSubmit}  noValidate autoComplete="off" className="statictable-form">
           {new_state.staticConfiguration.map((item, index)=>{
             return(
@@ -105,7 +112,34 @@ export default class StaticConfiguration extends React.Component{
     this.setState({
       staticConfiguration: staticConfig
     }, function () {
-      console.log('------save the data', this.state.staticConfiguration)
+      let myselect=document.getElementById("select-board-type");
+      console.log(myselect.options[myselect.selectedIndex].value)
+      FullStaticConfiguration.boardtype = myselect.options[myselect.selectedIndex].value;
+      FullStaticConfiguration.staticConfig = this.state.staticConfiguration;
+
+      let fetRes =  fetch(urlpost+"savedata",
+      {
+          method:'POST',
+          headers:{
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              "Access-Control-Allow-Origin":"*",
+              "Access-Control-Allow-Headers":"Content-Type,Access-Token"
+          },
+          mode:'no-cors',
+          body: JSON.stringify(FullStaticConfiguration)
+      })
+      fetRes.then(res=>res.json())
+        .then((data)=>{
+          
+        })
+        
+      .catch( (error) => {
+          console.log('request error', error);
+          return { error };
+      });
+
+      console.log('------save the data', FullStaticConfiguration)
     })
     // console.log('------save the data', staticConfiguration)
   }
