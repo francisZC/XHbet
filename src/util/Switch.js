@@ -9,10 +9,13 @@ class Switch extends React.Component{
         }
     }
     
-    componentDidUpdate(){
+    componentWillReceiveProps(){
+        console.log("--in switch componentWillReceiveProps",this.props.isChecked)
+        this.setState({
+            isChecked:!this.props.isChecked
+        })
     }
-    componentWillUpdate(){
-    }
+ 
     render(){
         return(
             <div id={this.props.id} className ={'switch-cont'} onClick={this.btnClick}>          
@@ -24,7 +27,6 @@ class Switch extends React.Component{
     }
     btnClick = (e)=>{
  
-        this.props.isChecked(!this.state.isChecked);
         this.setState({
             isChecked:!this.state.isChecked
         })

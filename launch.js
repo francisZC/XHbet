@@ -297,12 +297,17 @@ http.createServer(async function(request, response) {
                 Data += chunk;
                 Data = JSON.parse(Data);
                 let writeFileName = Data.boardtype;
-                let fullFilePath = staticTablePath + writeFileName+'.json';
-                fs.writeFile(fullFilePath, Data.staticConfig, (err)=>{
+                // let defaultType = Data.defaultType;
+                let fullFilePath = staticTablePath + writeFileName+'_config.json';
+                console.log("static data is", typeof(Data.staticConfig));
+                // fs.writeFile(staticTablePath+"default.json", defaultType,(err)=>{
+                //     if(err) throw err;
+                // });
+                fs.writeFile(fullFilePath, JSON.stringify(Data.staticConfig), (err)=>{
                     if (err) throw err;
                     response.end('write file success');
                 })
-                console.log("static data is",Data)
+                
             })
             break;
         case ".css":
