@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import Switch from '../util/Switch.js'
 import {jsondeepCopy} from '../util/util'
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import  PropTypes  from  'prop-types'  
+
 import "./StaticTable.css"
 const urlpost = "http://localhost:8888/";
 let FullStaticConfiguration = {
@@ -39,7 +39,7 @@ export default class StaticConfiguration extends React.Component{
     this.handleChange = this.handleChange.bind(this);
   }
   fetchJSON = (defaultBoardName) => {
-    let dataurl = 'http://localhost:8888/resource/json/'+defaultBoardName+"_config.json";
+    let dataurl = 'http://localhost:8888/resource/json/'+defaultBoardName+'_config.json';
     fetch(dataurl,
         {
             method:'POST',
@@ -84,7 +84,11 @@ export default class StaticConfiguration extends React.Component{
 
 
   changeBdType = ()=>{
+    let myselect=document.getElementById("select-board-type");
+      // let myselectDefault=document.getElementById("select-default-type");
 
+    let boardtype = myselect.options[myselect.selectedIndex].value;
+    this.fetchJSON(boardtype);
   }
   // setCheckState = (ifchecked) =>{
   //   console.log("----from switch to static table---")

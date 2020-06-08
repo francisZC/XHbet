@@ -12,7 +12,7 @@ class Switch extends React.Component{
     componentWillReceiveProps(){
         console.log("--in switch componentWillReceiveProps",this.props.isChecked)
         this.setState({
-            isChecked:!this.props.isChecked
+            isChecked: this.props.isChecked
         })
     }
  

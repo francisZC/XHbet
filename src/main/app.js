@@ -14,6 +14,7 @@ import Drawer from '../container/Drawer'
 import EditableTable from "../container/EditableTable"
 import StaticTable from "../container/StaticTable"
 import TabsControl from '../container/TabsControl'
+import FullBinGen from "../container/FullBinGen"
 import './App.css';
 // import fetch from 'isomorphic-fetch';
 // import { b64_sha1,jsondeepCopy } from '../util/util.js';
@@ -55,6 +56,7 @@ class App extends Component{
                 <TabsControl selectedComponent={this.state.drawerMsg}>
                     <EditableTable name="burn"></EditableTable>
                     <StaticTable name="statictable"></StaticTable>
+                    <FullBinGen name="fullbingenerate"></FullBinGen>
                 </TabsControl>
             </div>
       

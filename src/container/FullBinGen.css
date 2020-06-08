@@ -1,0 +1,9 @@
+[id*="index"],[id*="Enable"],[id*="T"]{
+    width: 80px;
+    text-align: center;
+}
+
+[id*="address"],[id*="size"]{
+    width: 100px;
+    text-align: center;
+}
