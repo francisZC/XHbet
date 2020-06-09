@@ -29,7 +29,7 @@ export default class EditableTable extends React.Component{
       border:"solid 1px black",
       
     };
-    this.fetchJSON = this.fetchJSON.bind(this);
+    this.fetchRawData = this.fetchRawData.bind(this);
     this.renderTable = this.renderTable.bind(this);
     this.editTable = this.editTable.bind(this);
     this.jsonParse = this.jsonParse.bind(this);
@@ -39,11 +39,11 @@ export default class EditableTable extends React.Component{
   };
   componentDidMount(){
     console.log("fetch json from server....")
-    this.fetchJSON()
+    this.fetchRawData()
   }
   
   
-  fetchJSON(){   
+  fetchRawData(){   
     fetch('http://localhost:8888/resource/json/tableRawData.json',
         {
             method:'POST',

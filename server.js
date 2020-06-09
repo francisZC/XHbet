@@ -128,13 +128,15 @@ app.get("/build/bundle.js", async function(request, response){
   response.write(Data);
   response.end();
 })
-app.get("/resource/json/tableRawData.json", async function(request, response){
+app.post("/resource/json/tableRawData.json", async function(request, response){
+
   Data = fs.readFileSync("resource/json/tableRawData.json",'utf-8');
+  console.log("----json--", Data)
   response.writeHead(200, {"Content-Type": "application/json"});
   response.write(Data);
   response.end();
 })
-app.get("/resource/json/STM3207_config.json", async function(request, response){
+app.post("/resource/json/STM3207_config.json", async function(request, response){
   Data = fs.readFileSync("resource/json/STM3207_config.json",'utf-8');
   response.writeHead(200, {"Content-Type": "application/json", "Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"Content-Type,Access-Token"});            
   response.write(JSON.stringify(Data));
@@ -145,7 +147,7 @@ app.get("/resource/image/zhihe.jpg", async function(request, response){
   response.writeHead(200, {"Content-Type": "image/jpg"});
 
   fs.stat("resource/image/zhihe.jpg", function (err, stat) {
-      var img = fs.readFileSync(file);
+      var img = fs.readFileSync("resource/image/zhihe.jpg");
       response.contentType = 'image/jpg';
       response.contentLength = stat.size;
       response.end(img, 'binary');

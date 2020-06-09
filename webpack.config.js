@@ -1,6 +1,6 @@
 const path = require('path')
 const htmlWebpackPlugin = require('html-webpack-plugin')
-
+const uglify = require('uglifyjs-webpack-plugin');
 module.exports={
     entry:"./src/main/app.js",
     output:{
@@ -11,7 +11,8 @@ module.exports={
         new htmlWebpackPlugin({
             template: path.resolve(__dirname, './index.html'),
             filename:'index.html'
-        })
+        }),
+        new uglify()
     ],
     module:{
         rules:[
